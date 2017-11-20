@@ -182,10 +182,12 @@ client.on("message", function(message) {
                                 let gameClass = require(gameFile);
                                 let game = new gameClass(gameId, client, message.author);
                                 games.push(game);
-                                joiningGames[message.channel.id] = gameId - 1;
 
+                                if (gameOptions.capabilities.indexOf("multiplayer") != -1) {
+                                    joiningGames[message.channel.id] = gameId - 1;
+                                }
                                 message.channel.send(gameOptions.joinMessage.replace("%1", "**" + parseInt(gameId) + "**")); //bold current number of game
-
+                                
                                 userGames[message.author.id] = gameId - 1;
                                 return;
                             }
