@@ -10,10 +10,6 @@ global.log = function(message) {
     console.log(message);
 }
 
-global.userTag = function(user) {
-    return user.tag;
-}
-
 global.getRandom = function() {
     if (arguments.length == 1) {
         if (typeof arguments[0] == Array) {
