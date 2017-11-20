@@ -1,0 +1,14 @@
+{
+    "command": [
+        "ffc",
+        "finalfantasticcard"
+    ],
+    "capabilities": [
+        "play",
+        "multiplayer"
+    ],
+    "directory": "ffc",
+    "requireFile": "game.js",
+    "joinMessage": "Game %1 has been started. To join this room, use `play:join`, and to close the room, `play:close`.",
+    "roomClosedMessage": "This room has been closed."
+}
