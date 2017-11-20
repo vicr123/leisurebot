@@ -65,7 +65,7 @@ client.on("message", function(message) {
         if (message.guild == null) { //This is a DM
             let messageParts = message.content.split(" ");
             if (!isNaN(messageParts[0])) {
-                userGames[message.author.id] = messageParts.shift();
+                userGames[message.author.id] = messageParts.shift() + 1;
             }
             let internalGameId = userGames[message.author.id];
             if (internalGameId == null) {
@@ -152,7 +152,7 @@ client.on("message", function(message) {
                     }
 
                     games[joiningGames[message.channel.id]].close();
-                    message.channel.send(games[joiningGames[message.channel.id]].roomClosedMessage().replace("%1", "**" + parseInt(gameId) + "**")); //bold current number of game
+                    message.channel.send(games[joiningGames[message.channel.id]].roomClosedMessage().replace("%1", "**" + parseInt(joiningGames[message.channel.id] + 1) + "**")); //bold current number of game
                     joiningGames[message.channel.id] = null;
                     return;
                 }
