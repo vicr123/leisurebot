@@ -65,7 +65,7 @@ client.on("message", function(message) {
         if (message.guild == null) { //This is a DM
             let messageParts = message.content.split(" ");
             if (!isNaN(messageParts[0])) {
-                userGames[message.author.id] = messageParts.shift() + 1;
+                userGames[message.author.id] = messageParts.shift() - 1;
             }
             let internalGameId = userGames[message.author.id];
             if (internalGameId == null) {
