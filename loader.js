@@ -138,11 +138,11 @@ client.on("message", function(message) {
                 }
                 case "join": {
                     if (args.length != 0) {
-                        message.reply("Invalid number of arguments");
+                        return message.reply("Invalid number of arguments");
                     }
 
                     if (joiningGames[message.channel.id] == null) {
-                        message.reply("There are no games open in <#" + message.channel.id + "> at this time.");
+                        return message.reply("There are no games open in <#" + message.channel.id + "> at this time.");
                     }
 
                     games[joiningGames[message.channel.id]].addMember(message.author);
@@ -173,11 +173,11 @@ client.on("message", function(message) {
                 }
                 case "close": {
                     if (args.length != 0) {
-                        message.reply("Invalid number of arguments");
+                        return message.reply("Invalid number of arguments");
                     }
 
                     if (joiningGames[message.channel.id] == null) {
-                        message.reply("There are no games you are able to close in <#" + message.channel.id + "> at this time.");
+                        return message.reply("There are no games you are able to close in <#" + message.channel.id + "> at this time.");
                     }
 
                     games[joiningGames[message.channel.id]].close();
@@ -218,7 +218,7 @@ client.on("message", function(message) {
                             }
                         }
 
-                        message.channel.send("I don't think such a game exists. Try `" + prefix + "list` to see a list of available games.");
+                        return message.channel.send("I don't think such a game exists. Try `" + prefix + "list` to see a list of available games.");
                     });
                 }
             }
