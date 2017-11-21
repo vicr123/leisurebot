@@ -74,7 +74,7 @@ class Game {
         newPos.onPass(plr)
       }
       if (i==steps) {
-        if (newPos['onStep']) {newPos.onStep(plr)}
+        if (newPos['onStep']) {newPos.onStep(plr, steps)}
         plr.Position = this.Board.Fields.indexOf(newPos);
       }
     }
