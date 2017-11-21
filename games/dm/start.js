@@ -31,7 +31,7 @@ module.exports = class {
     var Player = new DiscordMonies.Player(member, DiscordMonies.Games[this.id])
     DiscordMonies.Players[Player.ID] = Player
     DiscordMonies.Games[this.id].players[DiscordMonies.Games[this.id].players.length] = Player
-    Player.Game.announce("**" + Player.user.username + "** has joined the game!")
+    Player.Game.announce("**" + member.user.username + "** has joined the game!")
   }
   roomClosedMessage() {
     return "Game's closed, let's roll the dice!";
