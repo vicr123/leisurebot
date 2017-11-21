@@ -1,0 +1,15 @@
+{
+    "name": "Discord Monies",
+    "command": [
+        "dm",
+        "discordmonies"
+    ],
+    "capabilities": [
+        "play",
+        "multiplayer"
+    ],
+    "directory": "dm",
+    "requireFile": "start.js",
+    "joinMessage": "Game %1 has been started. To join this room, use `play:join`, and to close the room, `play:close`.",
+    "roomClosedMessage": "This room has been closed."
+}
