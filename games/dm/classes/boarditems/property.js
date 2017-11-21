@@ -17,28 +17,30 @@ class Property extends Purchasable {
     this.completedColorSet = false;
   }
   onStep(player) {
-    if (this.completedColorSet == false) {
-      player.modifyCash(-(this.cost));
-    } else {
-      switch (this.houseCount) {
-        case 0:
-          player.modifyCash(-(this.costSet))
-          break;
-        case 1:
-          player.modifyCash(-(this.costHouse))
-          break;
-        case 2:
-          player.modifyCash(-(this.costHouse2))
-          break;
-        case 3:
-          player.modifyCash(-(this.costHouse3))
-          break;
-        case 4:
-          player.modifyCash(-(this.costHouse4))
-          break;
-        case 5:
-          player.modifyCash(-(this.costHotel))
-          break;
+    if (this.owner != null) {
+      if (this.completedColorSet == false) {
+        player.modifyCash(-(this.cost));
+      } else {
+        switch (this.houseCount) {
+          case 0:
+            player.modifyCash(-(this.costSet))
+            break;
+          case 1:
+            player.modifyCash(-(this.costHouse))
+            break;
+          case 2:
+            player.modifyCash(-(this.costHouse2))
+            break;
+          case 3:
+            player.modifyCash(-(this.costHouse3))
+            break;
+          case 4:
+            player.modifyCash(-(this.costHouse4))
+            break;
+          case 5:
+            player.modifyCash(-(this.costHotel))
+            break;
+        }
       }
     }
   }

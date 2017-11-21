@@ -16,6 +16,11 @@ class Player {
   }
   modifyCash(cash) {
     this.Cash = this.Cash + cash
+    if (cash < 0) {
+      this.Player.send("["+this.Game.id+"] $"+Math.abs(cash)+" has been removed from your account.")
+    } else {
+      this.Player.send("["+this.Game.id+"] $"+cash+" has been added to your account.")
+    }
   }
 }
 exports.Player = Player
