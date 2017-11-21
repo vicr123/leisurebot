@@ -6,8 +6,28 @@ let games = [];
 let joiningGames = {};
 let userGames = {};
 
-global.log = function(message) {
-    console.log(message);
+global.log = function(logMessage, type) {
+  let logString = logMessage;
+  let logFormatting = "";
+  switch (type) {
+    case "info":
+      logString = "[37m" + logMessage + "[39m[0m";
+      logFormatting = "[37m[-][39m";
+      break;
+    case "warning":
+      logString = "[0m[33m" + logMessage + "[39m[0m";
+      logFormatting = "[33m[!][39m";
+      break;
+    case "critical":
+      logString = "[0m[31m" + logMessage + "[39m[0m";
+      logFormatting = "[31m[x][39m";
+      break;
+    case "success":
+      logString = "[32m" + logMessage + "[39m";
+      logFormatting = "[32m[S][39m";
+      break;
+  }
+  console.log(logFormatting + " " + logString)
 }
 
 global.getRandom = function() {
@@ -95,7 +115,7 @@ client.on("message", function(message) {
                 case "help": {
                     let embed = new Discord.RichEmbed();
                     embed.setAuthor("Leisure Help");
-                    embed.setColor("#ff5722");
+                    embed.setColor("#fbc02d");
                     embed.setDescription("Leisure Commands")
                     embed.addField("General", "ping\nhelp", true);
                     embed.addField("Games", "`join`\n`close`", true);
@@ -104,22 +124,25 @@ client.on("message", function(message) {
                     return;
                 }
                 case "eval": {
+                  if (message.author.id !== "246574843460321291" && message.author.id !== "278805875978928128") {
+                    return message.reply("You don't have access to this command.")
+                  };
                     let evaledResult = eval(args.join(" "));
                     let embed = new Discord.RichEmbed();
                     embed.setAuthor("Leisure Eval");
-                    embed.setColor("#ff5722");
-                    embed.addField(":inbox_tray: Input", args.join(" "), true);
-                    embed.addField(":outbox_tray: Output", evaledResult, true);
+                    embed.setColor("#673ab7");
+                    embed.addField(":inbox_tray: Input", args.join(" "));
+                    embed.addField(":outbox_tray: Output", evaledResult);
                     message.channel.send(embed);
                     break;
                 }
                 case "join": {
                     if (args.length != 0) {
-                        throw new UserInputError("Invalid number of arguments");
+                        message.reply("Invalid number of arguments");
                     }
 
                     if (joiningGames[message.channel.id] == null) {
-                        throw new UserInputError("There are no games you are able to join in <#" + message.channel.id + "> at this time.");
+                        message.reply("There are no games open in <#" + message.channel.id + "> at this time.");
                     }
 
                     games[joiningGames[message.channel.id]].addMember(message.author);
@@ -128,37 +151,43 @@ client.on("message", function(message) {
                 }
                 case "list": {
                     fs.readdir("games/installed", function(err, files) {
-                        let m = "Here are some games you can try:\n\n";
+                        let m = "";
 
                         for (let key in files) {
                             let gameOptions = JSON.parse(fs.readFileSync("games/installed/" + files[key]));
                             if (gameOptions == null) {
                                 throw new CommandError("Game definition file is corrupt. Please contact `vicr123#5096` or `zBlake#6715`.");
                             }
-                            m += gameOptions.name + " ─ `" + gameOptions.command[0] + "`";
+                            m += gameOptions.name + " ─ `" + gameOptions.command[0] + "`\n";
                         }
 
-                        message.channel.send(m);
+                        let embed = new Discord.RichEmbed();
+                        embed.setAuthor("Leisure ─ Games List");
+                        embed.setColor("#8bc34a");
+                        embed.setDescription("Here's a list of some games you can try;")
+                        embed.addField("Games", m, true);
+
+                        message.channel.send(embed);
                     });
                     break;
                 }
                 case "close": {
                     if (args.length != 0) {
-                        throw new UserInputError("Invalid number of arguments");
+                        message.reply("Invalid number of arguments");
                     }
 
                     if (joiningGames[message.channel.id] == null) {
-                        throw new UserInputError("There are no games you are able to close in <#" + message.channel.id + "> at this time.");
+                        message.reply("There are no games you are able to close in <#" + message.channel.id + "> at this time.");
                     }
 
                     games[joiningGames[message.channel.id]].close();
-                    message.channel.send(games[joiningGames[message.channel.id]].roomClosedMessage().replace("%1", "**" + parseInt(joiningGames[message.channel.id] + 1) + "**")); //bold current number of game
+                    message.channel.send(games[joiningGames[message.channel.id]].roomClosedMessage().replace("%1", "**" + parseInt(joiningGames[message.channel.id] + 1) + "**"));
                     joiningGames[message.channel.id] = null;
                     return;
                 }
                 default: {
                     if (joiningGames[message.channel.id] != null) {
-                        throw new UserInputError("This channel is already collecting members. Close the previous game first.");
+                        message.reply("This channel is already collecting members. Close the previous game first.");
                     }
 
                     fs.readdir("games/installed", function(err, files) {
@@ -182,8 +211,8 @@ client.on("message", function(message) {
                                 if (gameOptions.capabilities.indexOf("multiplayer") != -1) {
                                     joiningGames[message.channel.id] = gameId - 1;
                                 }
-                                message.channel.send(gameOptions.joinMessage.replace("%1", "**" + parseInt(gameId) + "**")); //bold current number of game
-                                
+                                message.channel.send(gameOptions.joinMessage.replace("%1", "**" + parseInt(gameId) + "**"));
+
                                 userGames[message.author.id] = gameId - 1;
                                 return;
                             }
@@ -206,9 +235,7 @@ client.on("message", function(message) {
             embed.setTitle("<:userexception:348796878709850114> Command Error");
             embed.setDescription("Leisure couldn't complete that command.");
         } else {
-            log("Uncaught Exception:");
-            log(err.stack);
-
+            log("Uncaught Exception:" + err.stack, "critical");
             embed.setTitle("<:exception:346458871893590017> Internal Error");
             embed.setFooter("This error has been logged, and we'll look into it.");
             embed.setDescription("Leisure has run into a problem trying to process that command.");
