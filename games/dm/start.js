@@ -11,6 +11,7 @@ var DiscordMonies = require('./classes/classloader.js');
 
 module.exports = class {
   constructor(id, client, firstPlayer) {
+    console.log("DISCORD MONIES | Preparing the game... ["+id+"]")
     this.id = id;
     this.client = client;
     this.isOpen = true;
@@ -19,6 +20,7 @@ module.exports = class {
     var Player = new DiscordMonies.Player(firstPlayer, Game)
     DiscordMonies.Players[Player.ID] = Player
     DiscordMonies.Games[this.id].players[DiscordMonies.Games[this.id].players.length] = Player
+    console.log("DISCORD MONIES | Game " +id+ " is ready")
   }
   addMember(member) {
     if (member == null) return;
@@ -41,6 +43,7 @@ module.exports = class {
     this.isOpen=false;
     DiscordMonies.Games[this.id].announce("The game has been closed, let's go!");
     DiscordMonies.Games[this.id].advanceTurn();
+    console.log("DISCORD MONIES | Game " + this.id + " started!")
   }
   processCommand(command, args, message) {
     if (fs.existsSync('games/dm/commands/'+command+'.js')) {

@@ -4,7 +4,9 @@ class Chest extends BoardItem {
     super(name)
   }
   onStep(player) {
-    //TODO: Implement Community Chest Cards
+    var chestCard = next(player.Game.Board.Chest, player.Game.Chest)
+    player.Game.announce("["+player.Game.id+"] Chest: "+chestCard)
+    player.Game.lastChest = chestCard
   }
 }
 exports.Chest = Chest;

@@ -15,6 +15,8 @@ class Game {
     this.players = [];
     this.Board = null;
     this.Started = false;
+    this.lastChance = null;
+    this.lastChest = null;
     this.currentPlayer = null;
     this.Board = new Board("default");
   }

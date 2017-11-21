@@ -4,7 +4,7 @@ class Station extends Purchasable {
     super(name, purchaseValue)
   }
   onStep(player) {
-    player.modifyCash(-100);
+    //TODO: Implement Railroad Cards
   }
 }
 exports.Station = Station;

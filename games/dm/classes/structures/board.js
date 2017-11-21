@@ -8,12 +8,34 @@ var Jail = require('../boarditems/jail.js').Jail;
 var Parking = require('../boarditems/parking.js').Parking;
 var Tax = require('../boarditems/tax.js').Tax;
 var ToJail = require('../boarditems/tojail.js').ToJail;
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 class Board {
   constructor(boardid) {
     if (require("fs").existsSync('games/dm/'+boardid+'.json')) {
       var boardData = require('../../'+boardid+'.json');
       this.Chance = boardData.Chance
       this.Chest = boardData.Chest
+      shuffle(this.Chest)
+      shuffle(this.Chance)
       var fieldData = [];
       boardData.Fields.forEach(function(item) {
         if (item.Type == "Go") {
