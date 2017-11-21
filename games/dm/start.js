@@ -66,6 +66,9 @@ module.exports = class {
             command.runCommand(message.author, args.join(" "), message, DiscordMonies)
           }
         }
+      } else {
+        DiscordMonies.Players[message.author.id].Game.announce("["+DiscordMonies.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + args, DiscordMonies.Players[message.author.id])
+        message.react("✅")
       }
     }
 }
