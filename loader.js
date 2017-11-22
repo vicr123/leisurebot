@@ -95,8 +95,12 @@ client.on("message", function(message) {
             if (internalGameId >= games.length) {
                 throw new UserInputError("Invalid Game ID. Please prefix your command with a game ID.")
             }
-
-            let command = messageParts.shift().toLowerCase();
+            
+            let command = messageParts.shift()
+            if (command == undefined || command == "") {
+             return; //this message has no content because it's an image, which can break things 
+            }
+            command = command.toLowerCase();
             games[internalGameId].processCommand(command, messageParts, message); //Pass control to the game module
         } else {
             if (!message.content.startsWith(prefix)) {
