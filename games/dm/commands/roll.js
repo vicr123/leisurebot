@@ -13,7 +13,7 @@ exports.runCommand = function(user, args, msgo, DiscordMonies) {
     if (roll == roll2) {embed.addField("Doubles!", "You can roll again!"); DiscordMonies.Players[user.id].Game.threwDouble=true;}
     embed.addField(user.username + " rolled a "+rollTotal, "and landed on "+newField.name)
     DiscordMonies.Players[user.id].needsToRoll=false
-    if (newField.owner == null) {
+    if (newField.owner && newField.owner == null) {
       embed.addField("Unowned property", "Nobody owns this property, you have to buy it or do an auction to proceed")
     } else {
         DiscordMonies.Players[user.id].Game.advanceTurn();
