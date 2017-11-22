@@ -20,25 +20,32 @@ class Property extends Purchasable {
     if (this.owner != null) {
       if (this.completedColorSet == false) {
         player.modifyCash(-(this.cost));
+        this.owner.modifyCash(this.cost)
       } else {
         switch (this.houseCount) {
           case 0:
             player.modifyCash(-(this.costSet))
+            this.owner.modifyCash(this.costSet)
             break;
           case 1:
             player.modifyCash(-(this.costHouse))
+            this.owner.modifyCash(this.costHouse)
             break;
           case 2:
             player.modifyCash(-(this.costHouse2))
+            this.owner.modifyCash(this.costHouse2)
             break;
           case 3:
             player.modifyCash(-(this.costHouse3))
+            this.owner.modifyCash(this.costHouse3)
             break;
           case 4:
             player.modifyCash(-(this.costHouse4))
+            this.owner.modifyCash(this.costHouse4)
             break;
           case 5:
             player.modifyCash(-(this.costHotel))
+            this.owner.modifyCash(this.costHotel)
             break;
         }
       }

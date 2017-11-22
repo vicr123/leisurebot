@@ -14,6 +14,7 @@ class Game {
     this.id = id;
     this.players = [];
     this.Board = null;
+    this.threwDouble = false;
     this.Started = false;
     this.lastChance = null;
     this.lastChest = null;
@@ -59,9 +60,14 @@ class Game {
 
   advanceTurn() {
     if (this.Started == true) {
-      this.currentPlayer = next(this.players, this.currentPlayer)
-      this.currentPlayer.needsToRoll=true;
-      this.announce("The current player is: " + this.currentPlayer.Username)
+      if (this.threwDouble == true) {
+        this.currentPlayer.needsToRoll=true;
+        this.announce("The current player is: " + this.currentPlayer.Username)
+      } else {
+        this.currentPlayer = next(this.players, this.currentPlayer)
+        this.currentPlayer.needsToRoll=true;
+        this.announce("The current player is: " + this.currentPlayer.Username)
+      }
     }
   }
 

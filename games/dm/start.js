@@ -72,10 +72,10 @@ module.exports = class {
       } else {
         console.log(args)
         if (args.join(" ") == "") {
-        DiscordMonies.Players[message.author.id].Game.announce("["+DiscordMonies.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + command, DiscordMonies.Players[message.author.id])
+        DiscordMonies.Players[message.author.id].Game.announce("["+DiscordMonies.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, DiscordMonies.Players[message.author.id])
         message.react("✅")
         } else {
-        DiscordMonies.Players[message.author.id].Game.announce("["+DiscordMonies.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + command + " " + args.join(" "), DiscordMonies.Players[message.author.id])
+        DiscordMonies.Players[message.author.id].Game.announce("["+DiscordMonies.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, DiscordMonies.Players[message.author.id])
         message.react("✅")
       }
       }
