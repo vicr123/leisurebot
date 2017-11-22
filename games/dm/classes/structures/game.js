@@ -61,6 +61,7 @@ class Game {
   advanceTurn() {
     if (this.Started == true) {
       if (this.threwDouble == true) {
+        this.threwDouble=false;
         this.currentPlayer.needsToRoll=true;
         this.announce("The current player is: " + this.currentPlayer.Username)
       } else {
