@@ -101,7 +101,7 @@ exports.runCommand = function(user, args, msgo, DiscordMonies) {
         };
         generate();
 
-        msgo.reply(
+        DiscordMonies.Players[user.id].Game.announce(
         {
             files: [
             {
@@ -110,10 +110,10 @@ exports.runCommand = function(user, args, msgo, DiscordMonies) {
             }]
         })
             embed.addField("Unowned property", "Nobody owns this property, you have to buy it or do an auction to proceed")
+            embed.addField("Price", "M"+newField.purchaseValue)
         } else if (newField.owner) {
             DiscordMonies.Players[user.id].Game.advanceTurn();
         } else {
-            msgo.reply("else statement happened")
             DiscordMonies.Players[user.id].Game.advanceTurn();
         }
         embed.setFooter(roll + " + " + roll2 + " = " + rollTotal)
