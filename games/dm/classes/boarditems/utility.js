@@ -15,8 +15,10 @@ class Utility extends Purchasable {
       })
       if (utilityCount == 1) {
         player.modifyCash(-(roll*4));
+        this.owner.modifyCash(roll*4)
       } else if (utilityCount == 2) {
         player.modifyCash(-(roll*10));
+        this.owner.modifyCash(roll*10)
       }
     //}
   }

@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const Canvas = require("canvas");
+const { createCanvas, loadImage, registerFont, Image } = require('canvas') //update to the latest version of canvas
 
 exports.DMOnly=true;
 exports.GameCommand=true;
@@ -14,77 +14,106 @@ exports.runCommand = function(user, args, msgo, DiscordMonies) {
         var newField = DiscordMonies.Players[user.id].Game.Board.Fields[DiscordMonies.Players[user.id].Position]
         var embed = new Discord.RichEmbed();
         embed.setTitle("Roll")
-        console.log("test1")
         if (roll == roll2) {embed.addField("Doubles!", "You can roll again!"); DiscordMonies.Players[user.id].Game.threwDouble=true;}
-        embed.addField(user.username + " rolled a " + rollTotal + " and landed on "+newField.name)
+        embed.addField(user.username + " rolled a " + rollTotal, " and landed on "+newField.name)
         DiscordMonies.Players[user.id].needsToRoll = false
-        console.log("test12")
+        if (newField instanceof DiscordMonies.BoardItems.Property && newField.owner == null) {
+        var canvas = createCanvas(600, 900) //rectangle height is twice the size of the width because of maths
+        var ctx = canvas.getContext('2d')
+        const generate = () =>
+        {
+            function wrapText(context, text, x, y, maxWidth, lineHeight)
+            {
+                var words = text.split(' ');
+                var line = '';
 
-        if (newField.owner && newField.owner == null) {
-            const Image = Canvas.Image;
-            var canvas = new Canvas(50, 100) //rectangle height is twice the size of the width because of maths
-            var ctx = canvas.getContext('2d')
-            const generate = () => {
-                function wrapText(context, text, x, y, maxWidth, lineHeight) {
-                    var words = text.split(' ');
-                    var line = '';
-
-                    for (var n = 0; n < words.length; n++) {
-                        var testLine = line + words[n] + ' ';
-                        var metrics = context.measureText(testLine);
-                        var testWidth = metrics.width;
-                        if (testWidth > maxWidth && n > 0) {
-                            context.fillText(line, x, y);
-                            line = words[n] + ' ';
-                            y += lineHeight;
-                        } else {
-                            line = testLine;
-                        }
-                    }
-                    context.fillText(line, x, y);
-                }
-
-                //The color of this card
-                ctx.fillStyle = cardColor;
-                ctx.fillRect(5, 5, canvas.width - 10, canvas.height / 8);
-
-                //The text of the property
-                ctx.font = "20px Georgia";
-                ctx.fillText("TITLE DEEDS", canvas.width / 2, 10);
-                wrapText(ctx, propertyName, canvas.width / 4, 15, canvas.width - 10, 4);
-
-                //Renting text
-                //With HOTEL
-                ctx.font = "13px Georgia";
-                ctx.fillText("RENT " + propertyCost, 15, 15);
-                ctx.fillText("With 1 House       " + propertyOneHCost, 15, 15);
-                ctx.fillText("With 2 Houses      " + propertyTwoHCost, 15, 15);
-                ctx.fillText("With 30 Houses     " + propertyThreeHCost, 15, 15);
-                ctx.fillText("With 4 Houses      " + propertyFourHCost, 15, 15);
-                ctx.fillText("With HOTEL         " + propertyHotelCost, 15, 15);
-
-                wrapText(ctx, "Mortgage Value " + propertyMortgageValue, canvas.width / 4, 15, canvas.width - 10, 4);
-                wrapText(ctx, "Houses cost " + propertyHouseCost + " each", canvas.width / 4, 15, canvas.width - 10, 4);
-                wrapText(ctx, "Hotels, " + propertyHouseCost + " each plus 4 houses", canvas.width / 4, 15, canvas.width - 10, 4);
-            };
-            generate();
-            console.log(canvas.toBuffer())
-            message.reply({
-                files: [
+                for (var n = 0; n < words.length; n++)
+                {
+                    var testLine = line + words[n] + ' ';
+                    var metrics = context.measureText(testLine);
+                    var testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0)
                     {
-                        attachment: canvas.toBuffer(),
-                        name: 'stats.png'
+                        context.fillText(line, x, y);
+                        line = words[n] + ' ';
+                        y += lineHeight;
                     }
-                ]
-            });
+                    else
+                    {
+                        line = testLine;
+                    }
+                }
+                context.fillText(line, x, y);
+            }
 
-            message.reply("yeah ya rolled")//this is NOT being sent <<<<
+            //registerFont('./fonts/kabel.ttf', { family: 'Kabel' }) //optional, you'll need to have the kabel font in a "fonts" directory for this to work
+
+            //The color of this card
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "black";
+            ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);
+            ctx.fillStyle = "white";
+            ctx.fillRect(2, 2, canvas.width - 2, canvas.height - 2);
+            ctx.fillStyle = "black";
+            ctx.fillRect(5, 5, canvas.width - 5, canvas.height / 6 + 2);
+            ctx.fillStyle = newField.color; //custom color here
+            ctx.fillRect(6, 6, canvas.width - 6, canvas.height / 6);
+            ctx.fillStyle = "white";
+            ctx.fillRect(canvas.width - 6, 5, canvas.width, canvas.height / 6 + 3);
+
+            //The text of the property
+            ctx.font = "bold 30px Tahoma";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("TITLE DEEDS", canvas.width / 2, 75);
+            ctx.font = "48px Tahoma";
+            ctx.fillText(newField.name, canvas.width / 2, 135); //property name here
+
+            //Renting text
+            //With HOTEL
+            ctx.font = "bold 39px Contemporary";
+            ctx.textAlign = "center";
+            ctx.fillText("RENT M"+newField.cost, canvas.width / 2, 255);
+            ctx.textAlign = "left";
+            ctx.font = "lighter 38px Contemporary";
+            ctx.fillText("With 1 House", 15, 330);
+            ctx.fillText("With 2 Houses", 15, 375);
+            ctx.fillText("With 3 Houses", 15, 420);
+            ctx.fillText("With 4 Houses", 15, 465);
+            ctx.fillText("With HOTEL", 15, 510);
+
+            //PRICES FOR HOUSES HERE
+            ctx.textAlign = "right";
+            ctx.fillText("M"+newField.costHouse, canvas.width - 10, 330); //house 1
+            ctx.fillText("M"+newField.costHouse2, canvas.width - 10, 375); //house 2
+            ctx.fillText("M"+newField.costHouse3, canvas.width - 10, 420); //house 3
+            ctx.fillText("M"+newField.costHouse4, canvas.width - 10, 465); //house 4
+            ctx.fillText("M"+newField.costHotel, canvas.width - 10, 510); //hotel
+
+            ctx.font = "bold 33px Contemporary";
+            ctx.textAlign = "center";
+            ctx.fillText("Mortgage Value  M"+newField.mortgageCost, canvas.width / 2, 660); //replace MORTGAGE VALUE with the value
+            ctx.font = "33px Contemporary";
+            ctx.fillText("Houses cost M"+newField.houseCost+" each", canvas.width / 2, 720); //replace HOUSE COST with the value
+            ctx.textAlign = "center";
+            wrapText(ctx, "Hotels, "+newField.houseCost+" each plus 4 houses", 0 + canvas.width / 2, 765, canvas.width - canvas.width / 4, 30); //replace HOTEL COST with the value
+        };
+        generate();
+
+        DiscordMonies.Players[user.id].Game.announce(
+        {
+            files: [
+            {
+                attachment: canvas.toBuffer(),
+                name: 'stats.png'
+            }]
+        })
             embed.addField("Unowned property", "Nobody owns this property, you have to buy it or do an auction to proceed")
+            embed.addField("Price", "M"+newField.purchaseValue)
         } else if (newField.owner) {
-
             DiscordMonies.Players[user.id].Game.advanceTurn();
         } else {
-            message.reply("else statement happened")
             DiscordMonies.Players[user.id].Game.advanceTurn();
         }
         embed.setFooter(roll + " + " + roll2 + " = " + rollTotal)
