@@ -111,8 +111,9 @@ exports.runCommand = function(user, args, msgo, DiscordMonies) {
         })
             embed.addField("Unowned property", "Nobody owns this property, you have to buy it or do an auction to proceed")
             embed.addField("Price", "M"+newField.purchaseValue)
-        } else if (newField.owner) {
-            DiscordMonies.Players[user.id].Game.advanceTurn();
+        } else if (newField instanceof DiscordMonies.Containers.Purchasable && newField.owner == null) {
+            embed.addField("Unowned Purchasable", "Nobody owns this field, you can buy it using the buy command or auction it with the auction command.")
+            embed.addField("Price", "M"+newField.purchaseValue)
         } else {
             DiscordMonies.Players[user.id].Game.advanceTurn();
         }

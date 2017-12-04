@@ -4,6 +4,7 @@ class Player {
     this.ID = user.id;
     this.Username = user.username;
     this.Cash = 1500;
+    this.isBidding = false;
     this.needsToRoll = false;
     this.Game = game;
     this.OrderPosition = game.players.length;

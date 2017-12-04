@@ -4,11 +4,12 @@ class Utility extends Purchasable {
     super(name, purchaseValue)
   }
   onStep(player, roll) {
-    //if (this.owner != null) {
+    if (this.owner != null) {
       var utilityCount = 0;
+      var owner = this.owner
       player.Game.Board.Fields.forEach(function(elem) {
         if (elem instanceof Utility) {
-          if (elem.owner && elem.owner == this.owner) {
+          if (elem.owner && elem.owner == owner) {
             utilityCount++;
           }
         }
@@ -20,7 +21,7 @@ class Utility extends Purchasable {
         player.modifyCash(-(roll*10));
         this.owner.modifyCash(roll*10)
       }
-    //}
+    }
   }
 }
 exports.Utility = Utility;
