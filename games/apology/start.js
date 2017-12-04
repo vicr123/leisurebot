@@ -32,6 +32,9 @@ module.exports = class {
         if (Apology.Players[member.id]) {
             throw new Error("You're already in this game.");
         }
+        if (Apology.Games[this.id].players.length == 4) {
+            throw new Error("This game is full!");
+        }
         var Player = new Apology.Player(member, Apology.Games[this.id]);
         Apology.Players[Player.id] = Player;
         Apology.Games[this.id].players[Apology.Games[this.id].players.length] = Player;
@@ -49,6 +52,12 @@ module.exports = class {
         Apology.Games[this.id].announce("The game has been closed, let's go!");
         Apology.Games[this.id].newDeck();
         console.log("Apology | Game " + this.id + " started!");
-        //for (var i = 0;)
+        var colors = ["red", "blue", "green", "yellow"];
+        for (var i = 0; i < Apology.Games[this.id].players.length; i++) {
+            shuffleArray(colors);
+            Apology.Games[this.id].players[i].color = colors[0];
+            Apology.Games[this.id].players[i].player.send("Your color is "+colors[0]+".");
+            colors = colors.shift();
+        }
     }
 }

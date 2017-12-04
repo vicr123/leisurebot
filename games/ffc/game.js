@@ -16,6 +16,7 @@ let availableCards = [
 module.exports = class {
     constructor(id, client, firstPlayer) {
         this.id = id;
+        this.firstPlayer = firstPlayer;
         this.gameMembers = [];
         this.decks = {};
         this.isOpen = true;

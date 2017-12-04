@@ -14,6 +14,7 @@ module.exports = class {
     console.log("DISCORD MONIES | Preparing the game... ["+id+"]")
     this.id = id;
     this.client = client;
+    this.firstPlayer = firstPlayer;
     this.isOpen = true;
     var Game = new DiscordMonies.Game(id);
     DiscordMonies.Games[id] = Game
