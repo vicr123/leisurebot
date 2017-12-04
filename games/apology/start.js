@@ -19,7 +19,7 @@ module.exports = class {
         var Game = new Apology.Game(id);
         Apology.Games[id] = Game;
         var Player = new Apology.Player(firstPlayer, Apology.Games[id]);
-        Apology.Players[Player.ID] = Player;
+        Apology.Players[Player.id] = Player;
         Apology.Games[id].players[Apology.Games[id].players.length] = Player;
     }
     addMember(member) {
@@ -27,12 +27,26 @@ module.exports = class {
         if (!this.isOpen) {
             throw new UserInputError("This game isn't available.");
         }
+        console.log(member.id);
         if (Apology.Players[member.id]) {
             throw new Error("You're already in this game.");
         }
         var Player = new Apology.Player(member, Apology.Games[this.id]);
-        Apology.Players[Player.ID] = Player;
+        Apology.Players[Player.id] = Player;
         Apology.Games[this.id].players[Apology.Games[this.id].players.length] = Player;
         Player.Game.announce("**" + member.username + "** has joined the game!");
+    }
+    processCommand(command, messageParts, message) {
+
+    }
+    roomClosedMessage() {
+        return "Everyone's ready, so let's get this game started!";
+    }
+    close() {
+        Apology.Games[this.id].started=true;
+        this.isOpen=false;
+        Apology.Games[this.id].announce("The game has been closed, let's go!");
+        Apology.Games[this.id].advanceTurn();
+        console.log("Apology | Game " + this.id + " started!")
     }
 }

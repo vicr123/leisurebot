@@ -1,6 +1,7 @@
 class Game {
     constructor(id) {
         this.id = id;
+        this.started = false;
         this.players = [];
         this.cardDeck = [];
         this.boardTiles = ["YSTART",
@@ -67,26 +68,29 @@ class Game {
     getPlayer(userResolve) {
         var returnValue = null;
         if (parseInt(userResolve)) {
-            returnValue = this.players[parseInt(userResolve)]
+            returnValue = this.players[parseInt(userResolve)];
         } else {
             this.players.forEach(function(elem, index) {
                 if (elem == userResolve) {
-                    returnValue = this.players[index]
+                    returnValue = this.players[index];
                 }
             })
         }
-        return returnValue
+        return returnValue;
     }
     announce(message, ignorePlayer) {
         this.players.forEach(function(elem) {
             if (ignorePlayer) {
                 if (ignorePlayer.ID != elem.ID) {
-                    elem.Player.send(message);
+                    elem.player.send(message);
                 }
             } else {
-                elem.Player.send(message);
+                elem.player.send(message);
             }
         })
+    }
+    newDeck() {
+        
     }
 }
 
