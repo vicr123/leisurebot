@@ -1,7 +1,7 @@
 class Player {
   constructor(user, game) {
     this.Player = user;
-    this.ID = user.id
+    this.ID = user.id;
     this.Username = user.username;
     this.Cash = 1500;
     this.needsToRoll = false;
