@@ -1,0 +1,15 @@
+{
+    "name": "Apology",
+    "command": [
+        "aplgy",
+        "apology"
+    ],
+    "capabilities": [
+        "play",
+        "multiplayer"
+    ],
+    "directory": "apology",
+    "requireFile": "start.js",
+    "joinMessage": "Game %1 has been started. To join this room, use `play:join`, and to close the room, `play:close`.",
+    "roomClosedMessage": "This room has been closed."
+}
