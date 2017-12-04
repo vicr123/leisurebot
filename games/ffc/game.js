@@ -107,20 +107,34 @@ module.exports = class {
 
     processCommand(command, args, message) {
         switch (command) {
-            case "close": {
+            /*case "close": {
                 this.close();
+                break;
+            }*/
+            case "say:": {
+                command = "";
+                //fall through
             }
             default: {
-                message.channel.send("Command:" + command + "\nArgs:" + args);
+                let m = command + " " + args.join(" ");
+
+                for (let member in this.gameMembers) {
+                    this.gameMembers[member].send("**#" + this.id + " " + message.author.username + ":** " + m);
+                }
+                message.react("✅");
             }
         }
     }
 
     broadcastMessage(message) {
         //Keep in mind that this broadcast system is not intended as a chat system, that will be implemented per-game.
-        for (let member in this.gameMembers) {
-            this.gameMembers[member].send("**#" + this.id + "**: " + message);
-        }
+        let me = this;
+        return new Promise(function(resolve, reject) {
+            for (let member in me.gameMembers) {
+                me.gameMembers[member].send("**#" + me.id + "**: " + message);
+            }
+            resolve();
+        });
     }
 
     createEmbed(message) {
@@ -135,11 +149,20 @@ module.exports = class {
         let hand = "";
         for (let key in this.decks[member]) {
             let card = this.decks[member][key];
-            if (this.topCard[0] == card[0] || this.topCard[1] == card[1] || card[0] == "+") {
+            if (this.canPlayCard(card)) {
                 hand += "**" + card + "** ";
             } else {
                 hand += card + " ";
             }
+        }
+        return hand;
+    }
+
+    canPlayCard(card) {
+        if (this.topCard.color == card[0] || this.topCard.card[1] == card[1] || card[0] == "+") {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -163,5 +186,9 @@ module.exports = class {
         e.addField("Top Card", this.topCard.card);
         e.addField("Your Hand", this.getHand(currentPlayer.id));
         currentPlayer.send(e);
+    }
+
+    roomClosedMessage() {
+        return "Room %1 has been closed, and is now starting.";
     }
 }
