@@ -18,6 +18,9 @@ module.exports = class {
         this.isOpen = true;
         var Game = new Apology.Game(id);
         Apology.Games[id] = Game;
+        var Player = new Apology.Player(firstPlayer, Apology.Games[id]);
+        Apology.Players[Player.ID] = Player;
+        Apology.Games[id].players[Apology.Games[id].players.length] = Player;
     }
     addMember(member) {
         if (member == null) return;
