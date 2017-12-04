@@ -1,6 +1,7 @@
 class Game {
     constructor(id) {
         this.id = id;
+        this.started = false;
         this.players = [];
         this.cardDeck = [];
         this.boardTiles = ["YSTART",
@@ -81,10 +82,10 @@ class Game {
         this.players.forEach(function(elem) {
             if (ignorePlayer) {
                 if (ignorePlayer.ID != elem.ID) {
-                    elem.Player.send(message);
+                    elem.player.send(message);
                 }
             } else {
-                elem.Player.send(message);
+                elem.player.send(message);
             }
         })
     }
