@@ -10,5 +10,5 @@
     ],
     "directory": "apology",
     "requireFile": "start.js",
-    "joinMessage": "Game %1 has been started. To join this room, use `play:join`, and to close the room, `play:close`."
+    "joinMessage": "A game of Apology with the id \"%1\" has been started. To join this room, use `play:join`, and to close the room, `play:close`."
 }
