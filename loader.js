@@ -203,6 +203,10 @@ client.on("message", function(message) {
                         return message.reply("There are no games you are able to close in <#" + message.channel.id + "> at this time.");
                     }
 
+                    if (games[joiningGames[message.channel.id]].firstPlayer.id != message.author.id && !message.author.bot) {
+                        return message.reply("You're not the creator of the current game! Ask the owner to run `play:close`.");
+                    }
+
                     games[joiningGames[message.channel.id]].close();
                     message.channel.send(games[joiningGames[message.channel.id]].roomClosedMessage().replace("%1", "**" + parseInt(joiningGames[message.channel.id] + 1) + "**"));
                     joiningGames[message.channel.id] = null;
@@ -211,6 +215,7 @@ client.on("message", function(message) {
                 default: {
                     if (joiningGames[message.channel.id] != null) {
                         message.reply("This channel is already collecting members. Close the previous game first.");
+                        return;
                     }
 
                     fs.readdir("games/installed", function(err, files) {

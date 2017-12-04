@@ -15,6 +15,7 @@ module.exports = class {
     constructor(id, client, firstPlayer) {
         this.id = id;
         this.client = client;
+        this.firstPlayer = firstPlayer;
         this.isOpen = true;
         var Game = new Apology.Game(id);
         Apology.Games[id] = Game;
@@ -46,7 +47,8 @@ module.exports = class {
         Apology.Games[this.id].started=true;
         this.isOpen=false;
         Apology.Games[this.id].announce("The game has been closed, let's go!");
-        Apology.Games[this.id].advanceTurn();
-        console.log("Apology | Game " + this.id + " started!")
+        Apology.Games[this.id].newDeck();
+        console.log("Apology | Game " + this.id + " started!");
+        //for (var i = 0;)
     }
 }
