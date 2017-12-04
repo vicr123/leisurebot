@@ -6,7 +6,11 @@
         {
             "label": "run",
             "type": "shell",
-            "command": "node loader.js"
+            "command": "node loader.js",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

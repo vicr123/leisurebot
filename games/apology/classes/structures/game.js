@@ -81,11 +81,13 @@ class Game {
         this.players.forEach(function(elem) {
             if (ignorePlayer) {
                 if (ignorePlayer.ID != elem.ID) {
-                    elem.Player.send(message)
+                    elem.Player.send(message);
                 }
             } else {
-                elem.Player.send(message)
+                elem.Player.send(message);
             }
         })
     }
 }
+
+exports.Game = Game;
