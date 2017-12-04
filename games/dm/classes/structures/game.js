@@ -15,6 +15,13 @@ class Game {
     this.players = [];
     this.Board = null;
     this.threwDouble = false;
+    this.bidInfo = {
+      playersBidding:0,
+      currentlyBidding:false,
+      highestBid:0,
+      bidder:null,
+      biddingFor:0,
+    };
     this.Started = false;
     this.lastChance = null;
     this.lastChest = null;
