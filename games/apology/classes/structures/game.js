@@ -28,7 +28,7 @@ class Game {
     }
     getPlayerFromColor(color) {
         for (var player of this.players){
-            if (player.color = color){
+            if (player.color == color){
                 return player;
             }
         }
@@ -75,46 +75,19 @@ class Game {
         image.src = "games/apology/images/board.png";
 
         while (drawing){};
-        drawing = true;
-        var pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn1");
+        var pawns = ["rpawn1", "rpawn2", "rpawn3", "rpawn4", "bpawn1", "bpawn2", "bpawn3", "bpawn4"];
+        for (var pawn of pawns){
+            drawing = true;
+            var pawnPoint = tempApology.Games[tempID].getPointFromPawn(pawn);
 
-        image = new Image();
-        image.onload = function(){
-            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
-            drawing = false;
-        };
-        image.src = "games/apology/images/rpawn1.png";
-        while (drawing){};
-        drawing = true;
-        pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn2");
-
-        image = new Image();
-        image.onload = function(){
-            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
-            drawing = false;
-        };
-        image.src = "games/apology/images/rpawn2.png";
-        while (drawing){};
-        drawing = true;
-        pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn3");
-
-        image = new Image();
-        image.onload = function(){
-            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
-            drawing = false;
-        };
-        image.src = "games/apology/images/rpawn3.png";
-        while (drawing){};
-        drawing = true;
-        pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn4");
-
-        image = new Image();
-        image.onload = function(){
-            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
-            drawing = false;
-        };
-        image.src = "games/apology/images/rpawn4.png";
-        while (drawing){};
+            image = new Image();
+            image.onload = function(){
+                ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
+                drawing = false;
+            };
+            image.src = "games/apology/images/"+pawn+".png";
+            while (drawing){};
+        }
 
         return tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
     }
@@ -156,6 +129,42 @@ class Game {
                     }
                 }
                 return {x:410,y:472};
+            case "bpawn1":
+                for (var player of this.players){
+                    if (player.color = "blue"){
+                        if (!player.pawn1loc) {
+                            return {x:113,y:379};
+                        }
+                    }
+                }
+                return {x:113,y:379};
+            case "bpawn2":
+                for (var player of this.players){
+                    if (player.color = "blue"){
+                        if (!player.pawn2loc) {
+                            return {x:142,y:379};
+                        }
+                    }
+                }
+                return {x:142,y:379};
+            case "bpawn3":
+                for (var player of this.players){
+                    if (player.color = "blue"){
+                        if (!player.pawn3loc) {
+                            return {x:113,y:410};
+                        }
+                    }
+                }
+                return {x:113,y:410};
+            case "bpawn4":
+                for (var player of this.players){
+                    if (player.color = "blue"){
+                        if (!player.pawn4loc) {
+                            return {x:142,y:410};
+                        }
+                    }
+                }
+                return {x:142,y:410};
         }
     }
     prepareTurns(){
@@ -179,11 +188,9 @@ class Game {
                 return this.announce(new Discord.Attachment("games/apology/images/card02.png"));
             case "3":
                 this.announce(new Discord.Attachment("games/apology/images/card03.png"));
-                var waitTill = new Date(new Date().getTime() + 3000);
-                while(waitTill > new Date()){};
-                if (!player.pawn1loc && !player.pawn2loc && !player.pawn3loc && !player.pawn4loc){
-                    player.player.send("Drat! You can't move!");
-                    this.announce("Drat! "+player.username+" can't move!", player);
+                if (!curPlayer.pawn1loc && !curPlayer.pawn2loc && !curPlayer.pawn3loc && !curPlayer.pawn4loc){
+                    curPlayer.player.send("Drat! You can't move!");
+                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                 }
             case "4":
                 return this.announce(new Discord.Attachment("games/apology/images/card04.png"));
@@ -196,7 +203,13 @@ class Game {
             case "10":
                 return this.announce(new Discord.Attachment("games/apology/images/card10.png"));
             case "11":
-                return this.announce(new Discord.Attachment("games/apology/images/card11.png"));
+                this.announce(new Discord.Attachment("games/apology/images/card11.png"));
+                var waitTill = new Date(new Date().getTime() + 3000);
+                while(waitTill > new Date()){};
+                if (!player.pawn1loc && !player.pawn2loc && !player.pawn3loc && !player.pawn4loc){
+                    player.player.send("Drat! You can't move!");
+                    this.announce("Drat! "+player.username+" can't move!", player);
+                }
             case "12":
                 return this.announce(new Discord.Attachment("games/apology/images/card12.png"));
             case "S":

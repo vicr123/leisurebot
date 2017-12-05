@@ -67,18 +67,12 @@ module.exports = class {
         Apology.Games[this.id].newDeck();
         console.log("Apology | Game " + this.id + " started!");
         var colors = ["red", "blue", "green", "yellow"];
-        shuffleArray(colors);
         for (var i = 0; i < Apology.Games[this.id].players.length; i++) {
             Apology.Games[this.id].players[i].color = colors[i];
             Apology.Games[this.id].players[i].player.send("Your color is "+colors[i]+".");
         }
-        var boardWait = false;
-        boardWait = Apology.Games[this.id].showBoard();
-        while (!boardWait){}
-        var tempID = this.id;
-        var waitTill = new Date(new Date().getTime() + 3000);
-        while(waitTill > new Date()){}
-        Apology.Games[tempID].prepareTurns();
-        Apology.Games[tempID].startTurn();
+        Apology.Games[this.id].showBoard();
+        Apology.Games[this.id].prepareTurns();
+        Apology.Games[this.id].startTurn();
     }
 }
