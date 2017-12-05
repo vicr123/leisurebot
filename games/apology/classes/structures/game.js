@@ -108,7 +108,7 @@ class Game {
         image.src = "games/apology/images/rpawn4.png";
         while (drawing){};
 
-        tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
+        return tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
     }
     getPointFromPawn(pawnName){
         switch (pawnName){
@@ -161,9 +161,36 @@ class Game {
     startTurn(){
         for (var player of this.players){
             if (player.color == this.turnList[this.turnNum]) {
-                player.player.send("It is your turn, <@"+player.id+">.");
+                player.player.send("It is your turn, <@"+player.id+">. Type `draw` to draw a card from the deck.");
                 this.announce("It is "+player.username+" ("+player.color+")'s turn.", player.player);
             }
+        }
+    }
+    drawCard(){
+        var card = this.cardDeck.shift();
+        switch (card) {
+            case "1":
+                return this.announce(new Discord.Attachment("games/apology/images/card01.png"));
+            case "2":
+                return this.announce(new Discord.Attachment("games/apology/images/card02.png"));
+            case "3":
+                return this.announce(new Discord.Attachment("games/apology/images/card03.png"));
+            case "4":
+                return this.announce(new Discord.Attachment("games/apology/images/card04.png"));
+            case "5":
+                return this.announce(new Discord.Attachment("games/apology/images/card05.png"));
+            case "7":
+                return this.announce(new Discord.Attachment("games/apology/images/card07.png"));
+            case "8":
+                return this.announce(new Discord.Attachment("games/apology/images/card08.png"));
+            case "10":
+                return this.announce(new Discord.Attachment("games/apology/images/card10.png"));
+            case "11":
+                return this.announce(new Discord.Attachment("games/apology/images/card11.png"));
+            case "12":
+                return this.announce(new Discord.Attachment("games/apology/images/card12.png"));
+            case "S":
+                return this.announce(new Discord.Attachment("games/apology/images/cardapology.png"));
         }
     }
 }

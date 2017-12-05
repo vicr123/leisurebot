@@ -41,10 +41,14 @@ module.exports = class {
         Player.Game.announce("**" + member.username + "** has joined the game!");
     }
     processCommand(command, messageParts, message) {
-        if (false) {
-
+        if (command == "draw") {
+            if (messageParts.length < 1) {
+                Apology.Games[this.id].drawCard();
+            } else {
+                return Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
+            }
         } else {
-            Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
+            return Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
         }
     }
     roomClosedMessage() {
