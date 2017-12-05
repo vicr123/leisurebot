@@ -55,13 +55,98 @@ class Game {
         const ctx = canvas.getContext('2d');
         var tempApology = require('../classloader.js');
         var tempID = this.id;
+        var drawing = true;
 
         var image = new Image();
         image.onload = function(){
             ctx.drawImage(image, 0, 0);
-            tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
+            drawing = false;
         };
         image.src = "games/apology/images/board.png";
+
+        while (drawing){};
+        drawing = true;
+        var pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn1");
+
+        image = new Image();
+        image.onload = function(){
+            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
+            drawing = false;
+        };
+        image.src = "games/apology/images/rpawn1.png";
+        while (drawing){};
+        drawing = true;
+        pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn2");
+
+        image = new Image();
+        image.onload = function(){
+            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
+            drawing = false;
+        };
+        image.src = "games/apology/images/rpawn2.png";
+        while (drawing){};
+        drawing = true;
+        pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn3");
+
+        image = new Image();
+        image.onload = function(){
+            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
+            drawing = false;
+        };
+        image.src = "games/apology/images/rpawn3.png";
+        while (drawing){};
+        drawing = true;
+        pawnPoint = tempApology.Games[tempID].getPointFromPawn("rpawn4");
+
+        image = new Image();
+        image.onload = function(){
+            ctx.drawImage(image, pawnPoint.x, pawnPoint.y);
+            drawing = false;
+        };
+        image.src = "games/apology/images/rpawn4.png";
+        while (drawing){};
+
+        tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
+    }
+    getPointFromPawn(pawnName){
+        switch (pawnName){
+            case "rpawn1":
+                for (var player of this.players){
+                    if (player.color = "red"){
+                        if (!player.pawn1loc) {
+                            return {x:383,y:442};
+                        }
+                    }
+                }
+                return {x:383,y:442};
+            case "rpawn2":
+                for (var player of this.players){
+                    if (player.color = "red"){
+                        if (!player.pawn2loc) {
+                            return {x:410,y:442};
+                        }
+                    }
+                }
+                return {x:410,y:442};
+            case "rpawn3":
+                for (var player of this.players){
+                    if (player.color = "red"){
+                        if (!player.pawn3loc) {
+                            return {x:383,y:472};
+                        }
+                    }
+                }
+                return {x:383,y:472};
+            case "rpawn4":
+                for (var player of this.players){
+                    if (player.color = "red"){
+                        if (!player.pawn4loc) {
+                            return {x:410,y:472};
+                        }
+                    }
+                }
+                return {x:410,y:472};
+        }
     }
 }
 
