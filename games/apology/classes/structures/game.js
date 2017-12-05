@@ -10,6 +10,8 @@ class Game {
                            "RSTART", "AR1", "AR2", "AR3", "AR4", "RSL21", "RSL22", "RSL23", "RSL24", "RSL25", "AR5", "AR6", "BSL11", "BHENT", "BSL13",
                            "BSTART", "AB1", "AB2", "AB3", "AB4", "BSL21", "BSL22", "BSL23", "BSL24", "BSL25", "AB5", "AB6", "GSL11", "GHENT", "GSL13",
                            "GSTART", "AG1", "AG2", "AG3", "AG4", "GSL21", "GSL22", "GSL23", "GSL24", "GSL25", "AG5", "AG6", "YSL11", "YHENT", "YSL13"];
+        this.turnList = ["red", "blue", "green", "yellow"];
+        this.turnNum = 0;
     }
     getPlayer(userResolve) {
         var returnValue = null;
@@ -146,6 +148,22 @@ class Game {
                     }
                 }
                 return {x:410,y:472};
+        }
+    }
+    prepareTurns(){
+        var tempTurnList = [];
+        for (var player of this.players){
+            tempTurnList.push(player.color);
+        }
+        this.turnList = tempTurnList;
+        this.turnNum = Math.floor((Math.random() * this.players.length));
+    }
+    startTurn(){
+        for (var player of this.players){
+            if (player.color == this.turnList[this.turnNum]) {
+                player.player.send("It is your turn, <@"+player.id+">.");
+                this.announce("It is "+player.username+" ("+player.color+")'s turn.", player.player);
+            }
         }
     }
 }

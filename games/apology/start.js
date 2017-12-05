@@ -41,7 +41,11 @@ module.exports = class {
         Player.Game.announce("**" + member.username + "** has joined the game!");
     }
     processCommand(command, messageParts, message) {
+        if (false) {
 
+        } else {
+            Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
+        }
     }
     roomClosedMessage() {
         return "Everyone's ready, so let's get this game started!";
@@ -60,5 +64,7 @@ module.exports = class {
             colors.shift();
         }
         Apology.Games[this.id].showBoard();
+        Apology.Games[this.id].prepareTurns();
+        Apology.Games[this.id].startTurn();
     }
 }
