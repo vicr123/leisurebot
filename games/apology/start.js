@@ -43,12 +43,18 @@ module.exports = class {
     processCommand(command, messageParts, message) {
         if (command == "draw") {
             if (messageParts.length < 1) {
-                Apology.Games[this.id].drawCard();
+                for (var player of Apology.Games[this.id].players) {
+                    if (player.color == Apology.Games[this.id].turnList[Apology.Games[this.id].turnNum]) {
+                        Apology.Games[this.id].drawCard();
+                    }
+                }
             } else {
                 return Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
+                message.react("✅");
             }
         } else {
             return Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
+            message.react("✅");
         }
     }
     roomClosedMessage() {
@@ -61,14 +67,18 @@ module.exports = class {
         Apology.Games[this.id].newDeck();
         console.log("Apology | Game " + this.id + " started!");
         var colors = ["red", "blue", "green", "yellow"];
+        shuffleArray(colors);
         for (var i = 0; i < Apology.Games[this.id].players.length; i++) {
-            shuffleArray(colors);
-            Apology.Games[this.id].players[i].color = colors[0];
-            Apology.Games[this.id].players[i].player.send("Your color is "+colors[0]+".");
-            colors.shift();
+            Apology.Games[this.id].players[i].color = colors[i];
+            Apology.Games[this.id].players[i].player.send("Your color is "+colors[i]+".");
         }
-        Apology.Games[this.id].showBoard();
-        Apology.Games[this.id].prepareTurns();
-        Apology.Games[this.id].startTurn();
+        var boardWait = false;
+        boardWait = Apology.Games[this.id].showBoard();
+        while (!boardWait){}
+        var tempID = this.id;
+        var waitTill = new Date(new Date().getTime() + 3000);
+        while(waitTill > new Date()){}
+        Apology.Games[tempID].prepareTurns();
+        Apology.Games[tempID].startTurn();
     }
 }

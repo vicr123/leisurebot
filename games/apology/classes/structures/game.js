@@ -10,7 +10,7 @@ class Game {
                            "RSTART", "AR1", "AR2", "AR3", "AR4", "RSL21", "RSL22", "RSL23", "RSL24", "RSL25", "AR5", "AR6", "BSL11", "BHENT", "BSL13",
                            "BSTART", "AB1", "AB2", "AB3", "AB4", "BSL21", "BSL22", "BSL23", "BSL24", "BSL25", "AB5", "AB6", "GSL11", "GHENT", "GSL13",
                            "GSTART", "AG1", "AG2", "AG3", "AG4", "GSL21", "GSL22", "GSL23", "GSL24", "GSL25", "AG5", "AG6", "YSL11", "YHENT", "YSL13"];
-        this.turnList = ["red", "blue", "green", "yellow"];
+        this.turnList = [];
         this.turnNum = 0;
     }
     getPlayer(userResolve) {
@@ -26,16 +26,24 @@ class Game {
         }
         return returnValue;
     }
+    getPlayerFromColor(color) {
+        for (var player of this.players){
+            if (player.color = color){
+                return player;
+            }
+        }
+    }
     announce(message, ignorePlayer) {
         this.players.forEach(function(elem) {
             if (ignorePlayer) {
-                if (ignorePlayer.ID != elem.ID) {
+                if (ignorePlayer.id != elem.id) {
                     elem.player.send(message);
                 }
             } else {
                 elem.player.send(message);
             }
-        })
+        });
+        return true;
     }
     newDeck() {
         var baseDeck = ["1", "1", "1", "1", "1",
@@ -151,30 +159,32 @@ class Game {
         }
     }
     prepareTurns(){
-        var tempTurnList = [];
         for (var player of this.players){
-            tempTurnList.push(player.color);
+            this.turnList.push(player.color);
         }
-        this.turnList = tempTurnList;
         this.turnNum = Math.floor((Math.random() * this.players.length));
     }
     startTurn(){
-        for (var player of this.players){
-            if (player.color == this.turnList[this.turnNum]) {
-                player.player.send("It is your turn, <@"+player.id+">. Type `draw` to draw a card from the deck.");
-                this.announce("It is "+player.username+" ("+player.color+")'s turn.", player.player);
-            }
-        }
+        var player = this.getPlayerFromColor(this.turnList[this.turnNum]);
+        player.player.send("It is your turn, <@"+player.id+">. Type `draw` to draw a card from the deck.");
+        this.announce("It is "+player.username+" ("+player.color+")'s turn.", player);
     }
     drawCard(){
         var card = this.cardDeck.shift();
+        var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
         switch (card) {
             case "1":
                 return this.announce(new Discord.Attachment("games/apology/images/card01.png"));
             case "2":
                 return this.announce(new Discord.Attachment("games/apology/images/card02.png"));
             case "3":
-                return this.announce(new Discord.Attachment("games/apology/images/card03.png"));
+                this.announce(new Discord.Attachment("games/apology/images/card03.png"));
+                var waitTill = new Date(new Date().getTime() + 3000);
+                while(waitTill > new Date()){};
+                if (!player.pawn1loc && !player.pawn2loc && !player.pawn3loc && !player.pawn4loc){
+                    player.player.send("Drat! You can't move!");
+                    this.announce("Drat! "+player.username+" can't move!", player);
+                }
             case "4":
                 return this.announce(new Discord.Attachment("games/apology/images/card04.png"));
             case "5":
