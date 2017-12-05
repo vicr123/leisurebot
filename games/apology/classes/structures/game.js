@@ -1,3 +1,5 @@
+const Discord = require("discord.js");
+
 class Game {
     constructor(id) {
         this.id = id;
@@ -46,6 +48,20 @@ class Game {
                         "12", "12", "12", "12",
                         "S", "S", "S", "S"];
         this.cardDeck = shuffleArray(baseDeck);
+    }
+    showBoard() {
+        const { createCanvas, loadImage, Image } = require('canvas');
+        const canvas = createCanvas(600, 600);
+        const ctx = canvas.getContext('2d');
+        var tempApology = require('../classloader.js');
+        var tempID = this.id;
+
+        var image = new Image();
+        image.onload = function(){
+            ctx.drawImage(image, 0, 0);
+            tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
+        };
+        image.src = "games/apology/images/board.png";
     }
 }
 

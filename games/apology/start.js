@@ -57,7 +57,8 @@ module.exports = class {
             shuffleArray(colors);
             Apology.Games[this.id].players[i].color = colors[0];
             Apology.Games[this.id].players[i].player.send("Your color is "+colors[0]+".");
-            colors = colors.shift();
+            colors.shift();
         }
+        Apology.Games[this.id].showBoard();
     }
 }
