@@ -292,22 +292,22 @@ class Game {
         var yP = this.getPlayerFromColor("yellow");
 
         switch (pawn){
-            case "rpawn1": rP.pawn1loc = destination;
-            case "rpawn2": rP.pawn2loc = destination;
-            case "rpawn3": rP.pawn3loc = destination;
-            case "rpawn4": rP.pawn4loc = destination;
-            case "bpawn1": if (bP) bP.pawn1loc = destination;
-            case "bpawn2": if (bP) bP.pawn2loc = destination;
-            case "bpawn3": if (bP) bP.pawn3loc = destination;
-            case "bpawn4": if (bP) bP.pawn4loc = destination;
-            case "gpawn1": if (gP) gP.pawn1loc = destination;
-            case "gpawn2": if (gP) gP.pawn2loc = destination;
-            case "gpawn3": if (gP) gP.pawn3loc = destination;
-            case "gpawn4": if (gP) gP.pawn4loc = destination;
-            case "ypawn1": if (yP) yP.pawn1loc = destination;
-            case "ypawn2": if (yP) yP.pawn2loc = destination;
-            case "ypawn3": if (yP) yP.pawn3loc = destination;
-            case "ypawn4": if (yP) yP.pawn4loc = destination;
+            case "rpawn1": rP.pawn1loc = destination; return;
+            case "rpawn2": rP.pawn2loc = destination; return;
+            case "rpawn3": rP.pawn3loc = destination; return;
+            case "rpawn4": rP.pawn4loc = destination; return;
+            case "bpawn1": if (bP) bP.pawn1loc = destination; return;
+            case "bpawn2": if (bP) bP.pawn2loc = destination; return;
+            case "bpawn3": if (bP) bP.pawn3loc = destination; return;
+            case "bpawn4": if (bP) bP.pawn4loc = destination; return;
+            case "gpawn1": if (gP) gP.pawn1loc = destination; return;
+            case "gpawn2": if (gP) gP.pawn2loc = destination; return;
+            case "gpawn3": if (gP) gP.pawn3loc = destination; return;
+            case "gpawn4": if (gP) gP.pawn4loc = destination; return;
+            case "ypawn1": if (yP) yP.pawn1loc = destination; return;
+            case "ypawn2": if (yP) yP.pawn2loc = destination; return;
+            case "ypawn3": if (yP) yP.pawn3loc = destination; return;
+            case "ypawn4": if (yP) yP.pawn4loc = destination; return;
         }
     }
     getDestination(startSpace, howFar, color){
@@ -358,10 +358,10 @@ class Game {
                 this.announce(new Discord.Attachment("games/apology/images/card02.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
                     switch (curPlayer.color) {
-                        case "red": this.movePawn(curPlayer, "rpawn1", "RSTART");
-                        case "blue": this.movePawn(curPlayer, "bpawn1", "BSTART");
-                        case "green": this.movePawn(curPlayer, "gpawn1", "GSTART");
-                        case "yellow": this.movePawn(curPlayer, "ypawn1", "YSTART");
+                        case "red": this.movePawn(curPlayer, "rpawn1", "RSTART"); break;
+                        case "blue": this.movePawn(curPlayer, "bpawn1", "BSTART"); break;
+                        case "green": this.movePawn(curPlayer, "gpawn1", "GSTART"); break;
+                        case "yellow": this.movePawn(curPlayer, "ypawn1", "YSTART"); break;
                     }
                     this.showBoard();
                     curPlayer.player.send("Your first pawn is out of start, and you also get another turn!");
@@ -377,7 +377,8 @@ class Game {
                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
-                } else if (curPlayer.pawnsOut == 1) {
+                }
+                if (curPlayer.pawnsOut == 1) {
                     switch (curPlayer.color) {
                         case "red": 
                             if (curPlayer.pawn1loc != "start") {
