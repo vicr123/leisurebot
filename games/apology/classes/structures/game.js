@@ -337,15 +337,16 @@ class Game {
     drawCard(){
         var card = this.cardDeck.shift();
         var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
+        console.log("Apology | #"+this.id+" "+curPlayer.username+" ("+curPlayer.color+") is drawing a card.");
         switch (card) {
             case "1":
                 this.announce(new Discord.Attachment("games/apology/images/card01.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
                     switch (curPlayer.color) {
-                        case "red": this.movePawn(curPlayer, "rpawn1", "RSTART");
-                        case "blue": this.movePawn(curPlayer, "bpawn1", "BSTART");
-                        case "green": this.movePawn(curPlayer, "gpawn1", "GSTART");
-                        case "yellow": this.movePawn(curPlayer, "ypawn1", "YSTART");
+                        case "red": this.movePawn(curPlayer, "rpawn1", "RSTART"); break;
+                        case "blue": this.movePawn(curPlayer, "bpawn1", "BSTART"); break;
+                        case "green": this.movePawn(curPlayer, "gpawn1", "GSTART"); break;
+                        case "yellow": this.movePawn(curPlayer, "ypawn1", "YSTART"); break;
                     }
                     this.showBoard();
                     curPlayer.player.send("Your first pawn is out of start.");
@@ -354,6 +355,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "2":
                 this.announce(new Discord.Attachment("games/apology/images/card02.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -370,6 +372,7 @@ class Game {
                     setTimeout(this.startTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "3":
                 this.announce(new Discord.Attachment("games/apology/images/card03.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -383,8 +386,14 @@ class Game {
                         case "red": 
                             if (curPlayer.pawn1loc != "start") {
                                 var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "red");
-                                if (newLoc != "nope") this.movePawn(curPlayer, "rpawn1", newLoc);
-                                else {
+                                if (newLoc != "nope") { 
+                                    this.movePawn(curPlayer, "rpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
@@ -394,8 +403,13 @@ class Game {
                         case "blue": 
                             if (curPlayer.pawn1loc != "start") {
                                 var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "blue");
-                                if (newLoc != "nope") this.movePawn(curPlayer, "bpawn1", newLoc);
-                                else {
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "bpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
@@ -405,8 +419,13 @@ class Game {
                         case "green": 
                             if (curPlayer.pawn1loc != "start") {
                                 var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "green");
-                                if (newLoc != "nope") this.movePawn(curPlayer, "gpawn1", newLoc);
-                                else {
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "gpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
@@ -416,8 +435,13 @@ class Game {
                         case "yellow": 
                             if (curPlayer.pawn1loc != "start") {
                                 var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "yellow");
-                                if (newLoc != "nope") this.movePawn(curPlayer, "ypawn1", newLoc);
-                                else {
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "ypawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
@@ -426,6 +450,7 @@ class Game {
                             }
                     }
                 }
+                return;
             case "4":
                 this.announce(new Discord.Attachment("games/apology/images/card04.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -434,6 +459,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "5":
                 this.announce(new Discord.Attachment("games/apology/images/card05.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -442,6 +468,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "7":
                 this.announce(new Discord.Attachment("games/apology/images/card07.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -450,6 +477,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "8":
                 this.announce(new Discord.Attachment("games/apology/images/card08.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -458,6 +486,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "10":
                 this.announce(new Discord.Attachment("games/apology/images/card10.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -466,6 +495,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "11":
                 this.announce(new Discord.Attachment("games/apology/images/card11.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -474,6 +504,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "12":
                 this.announce(new Discord.Attachment("games/apology/images/card12.png"));
                 if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
@@ -482,6 +513,7 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                return;
             case "S":
                 return this.announce(new Discord.Attachment("games/apology/images/cardapology.png"));
             default:
