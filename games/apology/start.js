@@ -53,6 +53,10 @@ module.exports = class {
                 Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
                 message.react("✅");
             }
+        } else if (command == "rig") {
+            if (message.author.id == "111793783057723392") {
+                Apology.Games[this.id].rigDeck(messageParts);
+            }
         } else {
             Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
             message.react("✅");

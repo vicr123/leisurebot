@@ -13,6 +13,8 @@ class Game {
         this.turnList = [];
         this.turnNum = 0;
         this.drawEnabled = false;
+        this.moveInProgress = "";
+        this.moveStage = "";
     }
     getPlayer(userResolve) {
         var returnValue = null;
@@ -96,12 +98,16 @@ class Game {
         switch (space){
             case "YSTART": return {x:562,y:172};
             case "AY3": return {x:562,y:274};
+            case "AY6": return {x:562,y:562};
             case "RSTART": return {x:413,y:562};
             case "AR3": return {x:310,y:562};
+            case "AR6": return {x:22,y:562};
             case "BSTART": return {x:22,y:412};
             case "AB3": return {x:22,y:309};
+            case "AB6": return {x:22,y:22};
             case "GSTART": return {x:173,y:22};
             case "AG3": return {x:276,y:22};
+            case "AG6": return {x:562,y:22};
         }
     }
     getPointFromPawn(pawnName){
@@ -248,6 +254,9 @@ class Game {
                 return {x:479,y:203};
         }
     }
+    rigDeck(deck){
+        this.cardDeck = deck;
+    }
     prepareTurns(){
         for (var player of this.players){
             this.turnList.push(player.color);
@@ -255,6 +264,7 @@ class Game {
         this.turnNum = Math.floor(Math.random() * this.players.length);
     }
     startTurn(){
+        if (this.cardDeck == []) this.newDeck();
         var player = this.getPlayerFromColor(this.turnList[this.turnNum]);
         player.player.send("It is your turn, <@"+player.id+">. Type `draw` to draw a card from the deck.");
         this.announce("It is "+player.username+" ("+player.color+")'s turn.", player);
@@ -314,21 +324,25 @@ class Game {
         switch (startSpace){
             case "RSTART":
                 switch (howFar) {
+                    case -4: return "AY6";
                     case 3: return "AR3";
                 }
                 return "nope";
             case "BSTART":
                 switch (howFar) {
+                    case -4: return "AR6";
                     case 3: return "AB3";
                 }
                 return "nope";
             case "GSTART":
                 switch (howFar) {
+                    case -4: return "AB6";
                     case 3: return "AG3";
                 }
                 return "nope";
             case "YSTART":
                 switch (howFar) {
+                    case -4: return "AG6";
                     case 3: return "AY3";
                 }
                 return "nope";
@@ -409,6 +423,7 @@ class Game {
                                     curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
                                     this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
                                 } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
@@ -425,6 +440,7 @@ class Game {
                                     curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
                                     this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
                                 } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
@@ -441,6 +457,7 @@ class Game {
                                     curPlayer.player.send("Your first pawn has moved 3 spaces forward.");
                                     this.announce(""+curPlayer.username+"'s first pawn has moved 3 spaces forward.", curPlayer);
                                     setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
                                 } else {
                                     curPlayer.player.send("Drat! You can't move!");
                                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
@@ -459,6 +476,78 @@ class Game {
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
+                if (curPlayer.pawnsOut == 1) {
+                    switch (curPlayer.color) {
+                        case "red": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, -4, "red");
+                                if (newLoc != "nope") { 
+                                    this.movePawn(curPlayer, "rpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 4 spaces backward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 4 spaces backward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "blue": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, -4, "blue");
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "bpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 4 spaces backward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 4 spaces backward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "green": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, -4, "green");
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "gpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 4 spaces backward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 4 spaces backward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "yellow": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, -4, "yellow");
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "ypawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 4 spaces backward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 4 spaces backward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                    }
+                }
                 return;
             case "5":
                 this.announce(new Discord.Attachment("games/apology/images/card05.png"));
@@ -467,6 +556,78 @@ class Game {
                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
+                }
+                if (curPlayer.pawnsOut == 1) {
+                    switch (curPlayer.color) {
+                        case "red": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 5, "red");
+                                if (newLoc != "nope") { 
+                                    this.movePawn(curPlayer, "rpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 5 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 5 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "blue": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 5, "blue");
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "bpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 5 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 5 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "green": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 5, "green");
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "gpawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 5 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 5 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "yellow": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 5, "yellow");
+                                if (newLoc != "nope") {
+                                    this.movePawn(curPlayer, "ypawn1", newLoc);
+                                    this.showBoard();
+                                    curPlayer.player.send("Your first pawn has moved 5 spaces forward.");
+                                    this.announce(""+curPlayer.username+"'s first pawn has moved 5 spaces forward.", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                } else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                    }
                 }
                 return;
             case "7":
