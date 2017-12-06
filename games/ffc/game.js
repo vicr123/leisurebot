@@ -65,7 +65,7 @@ module.exports = class {
         if (this.gameMembers.indexOf(member) != -1) {
             throw new Error("You're already in this game.");
         }
-        this.broadcastMessage(":inbox_tray: " + getRandom("%1 has joined this room!",
+        this.broadcastMessage(":arrow_right: " + getRandom("%1 has joined this room!",
                                         "%1 joined the party!",
                                         "%1 is in the house!",
                                         "%1 is ready to party!",
@@ -96,7 +96,7 @@ module.exports = class {
 
         //Start playing!
         let topCard = this.takeTopCard();
-        while (this.getCardDefinition(topCard, "/") == "/") {
+        while (this.topCard[0] == "+" || this.topCard[1] == "S" || this.topCard[1] == "R" || this.topCard[1] == "+") {
             this.discardedCards.push(topCard);
             topCard = this.takeTopCard();
         }
@@ -112,9 +112,28 @@ module.exports = class {
                 this.close();
                 break;
             }*/
-            case "say:": {
+            case "say": {
                 command = "";
                 //fall through
+            }
+            case "play": {
+                if (args.length != 1) {
+                    message.channel.send("Usage: `play [card]`");
+                    return;
+                }
+
+                if (this.decks[message.author.id].indexOf(args[0].toUpper()) == -1) {
+                    message.channel.send("You don't have that card.");
+                }
+
+                if (!this.canPlayCard(args[0])) {
+                    message.channel.send("That card is not playable at the moment.");
+                }
+
+                
+            }
+            case "carddef": {
+                message.channel.send(JSON.stringify(this.getCardDefinition(args[0])));
             }
             default: {
                 let m = command + " " + args.join(" ");
@@ -146,7 +165,7 @@ module.exports = class {
         return e;
     }
 
-    getHand(member) {
+    getHand(member) { //member: user ID
         let hand = "";
         for (let key in this.decks[member]) {
             let card = this.decks[member][key];
@@ -168,16 +187,17 @@ module.exports = class {
     }
 
     getCardDefinition(card, defaultColor) {
-        if (card.length != 2) {
+        card = card.toUpperCase();
+        if (card.length != 2 && !(card[0] == "+" && card.length == 3)) {
             return null;
         }
 
-        if (card[0] != "B" && card[0] != "G" && card[0] != "R" && card[0] != "Y") {
+        if (card[0] != "B" && card[0] != "G" && card[0] != "R" && card[0] != "Y" && card[0] != "+") {
             return null;
         }
         return {
-            card: card,
-            color: card[0] == ("+" ? defaultColor : card[0])
+            card: card.substr(0, 2),
+            color: card[0] == "+" ? card[2] : card[0]
         }
     }
 
