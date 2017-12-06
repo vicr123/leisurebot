@@ -94,7 +94,10 @@ class Game {
     }
     getPointFromSpace(space){
         switch (space){
-
+            case "YSTART": return {x:562,y:172};
+            case "RSTART": return {x:413,y:562};
+            case "BSTART": return {x:22,y:412};
+            case "GSTART": return {x:173,y:22};
         }
     }
     getPointFromPawn(pawnName){
@@ -102,9 +105,8 @@ class Game {
             case "rpawn1":
                 for (var player of this.players){
                     if (player.color == "red"){
-                        if (player.pawn1loc == "start") {
-                            return {x:383,y:442};
-                        }
+                        if (player.pawn1loc == "start") return {x:383,y:442};
+                        else return this.getPointFromSpace(player.pawn1loc);
                     }
                 }
                 return {x:383,y:442};
@@ -138,9 +140,8 @@ class Game {
             case "bpawn1":
                 for (var player of this.players){
                     if (player.color == "blue"){
-                        if (player.pawn1loc == "start") {
-                            return {x:113,y:379};
-                        }
+                        if (player.pawn1loc == "start") return {x:113,y:379};
+                        else return this.getPointFromSpace(player.pawn1loc);
                     }
                 }
                 return {x:113,y:379};
@@ -174,9 +175,8 @@ class Game {
             case "gpawn1":
                 for (var player of this.players){
                     if (player.color == "green"){
-                        if (player.pawn1loc == "start") {
-                            return {x:173,y:114};
-                        }
+                        if (player.pawn1loc == "start") return {x:173,y:114};
+                        else return this.getPointFromSpace(player.pawn1loc);
                     }
                 }
                 return {x:173,y:114};
@@ -210,9 +210,8 @@ class Game {
             case "ypawn1":
                 for (var player of this.players){
                     if (player.color == "yellow"){
-                        if (player.pawn1loc == "start") {
-                            return {x:451,y:172};
-                        }
+                        if (player.pawn1loc == "start") return {x:451,y:172};
+                        else return this.getPointFromSpace(player.pawn1loc);
                     }
                 }
                 return {x:451,y:172};
