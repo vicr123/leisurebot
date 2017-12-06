@@ -44,7 +44,7 @@ module.exports = class {
         if (command == "draw") {
             if (messageParts.length < 1) {
                 for (var player of Apology.Games[this.id].players) {
-                    if (player.color == Apology.Games[this.id].turnList[Apology.Games[this.id].turnNum]) {
+                    if (player.color == Apology.Games[this.id].turnList[Apology.Games[this.id].turnNum] && Apology.Games[this.id].drawEnabled) {
                         Apology.Games[this.id].drawCard();
                     }
                 }
