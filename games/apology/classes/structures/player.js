@@ -9,6 +9,7 @@ class Player {
         this.pawn2loc = "start";
         this.pawn3loc = "start";
         this.pawn4loc = "start";
+        this.pawnsOut = 0;
     }
 }
 exports.Player = Player;

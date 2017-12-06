@@ -95,9 +95,13 @@ class Game {
     getPointFromSpace(space){
         switch (space){
             case "YSTART": return {x:562,y:172};
+            case "AY3": return {x:562,y:274};
             case "RSTART": return {x:413,y:562};
+            case "AR3": return {x:310,y:562};
             case "BSTART": return {x:22,y:412};
+            case "AB3": return {x:22,y:309};
             case "GSTART": return {x:173,y:22};
+            case "AG3": return {x:276,y:22};
         }
     }
     getPointFromPawn(pawnName){
@@ -306,6 +310,30 @@ class Game {
             case "ypawn4": if (yP) yP.pawn4loc = destination;
         }
     }
+    getDestination(startSpace, howFar, color){
+        switch (startSpace){
+            case "RSTART":
+                switch (howFar) {
+                    case 3: return "AR3";
+                }
+                return "nope";
+            case "BSTART":
+                switch (howFar) {
+                    case 3: return "AB3";
+                }
+                return "nope";
+            case "GSTART":
+                switch (howFar) {
+                    case 3: return "AG3";
+                }
+                return "nope";
+            case "YSTART":
+                switch (howFar) {
+                    case 3: return "AY3";
+                }
+                return "nope";
+        }
+    }
     drawCard(){
         var card = this.cardDeck.shift();
         var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
@@ -322,6 +350,7 @@ class Game {
                     this.showBoard();
                     curPlayer.player.send("Your first pawn is out of start.");
                     this.announce(curPlayer.username+"'s first pawn is out of start.", curPlayer);
+                    curPlayer.pawnsOut++;
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
                 }
@@ -335,8 +364,9 @@ class Game {
                         case "yellow": this.movePawn(curPlayer, "ypawn1", "YSTART");
                     }
                     this.showBoard();
-                    curPlayer.player.send("Your first pawn is out of start.");
+                    curPlayer.player.send("Your first pawn is out of start, and you also get another turn!");
                     this.announce(curPlayer.username+"'s first pawn is out of start.", curPlayer);
+                    curPlayer.pawnsOut++;
                     setTimeout(this.startTurn.bind(this), 4500);
                     return;
                 }
@@ -347,6 +377,53 @@ class Game {
                     this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
+                } else if (curPlayer.pawnsOut == 1) {
+                    switch (curPlayer.color) {
+                        case "red": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "red");
+                                if (newLoc != "nope") this.movePawn(curPlayer, "rpawn1", newLoc);
+                                else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "blue": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "blue");
+                                if (newLoc != "nope") this.movePawn(curPlayer, "bpawn1", newLoc);
+                                else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "green": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "green");
+                                if (newLoc != "nope") this.movePawn(curPlayer, "gpawn1", newLoc);
+                                else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                        case "yellow": 
+                            if (curPlayer.pawn1loc != "start") {
+                                var newLoc = this.getDestination(curPlayer.pawn1loc, 3, "yellow");
+                                if (newLoc != "nope") this.movePawn(curPlayer, "ypawn1", newLoc);
+                                else {
+                                    curPlayer.player.send("Drat! You can't move!");
+                                    this.announce("Drat! "+curPlayer.username+" can't move!", curPlayer);
+                                    setTimeout(this.advanceTurn.bind(this), 4500);
+                                    return;
+                                }
+                            }
+                    }
                 }
             case "4":
                 this.announce(new Discord.Attachment("games/apology/images/card04.png"));
