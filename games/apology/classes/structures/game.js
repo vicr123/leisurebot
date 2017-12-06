@@ -328,7 +328,7 @@ class Game {
                 }
             case "2":
                 this.announce(new Discord.Attachment("games/apology/images/card02.png"));
-                if (!curPlayer.pawn1loc && !curPlayer.pawn2loc && !curPlayer.pawn3loc && !curPlayer.pawn4loc){
+                if (curPlayer.pawn1loc == "start" && curPlayer.pawn2loc == "start" && curPlayer.pawn3loc == "start" && curPlayer.pawn4loc == "start"){
                     switch (curPlayer.color) {
                         case "red": this.movePawn(curPlayer, "rpawn1", "RSTART");
                         case "blue": this.movePawn(curPlayer, "bpawn1", "BSTART");
