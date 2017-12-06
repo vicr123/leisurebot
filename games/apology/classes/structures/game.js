@@ -102,7 +102,7 @@ class Game {
             case "rpawn1":
                 for (var player of this.players){
                     if (player.color == "red"){
-                        if (!player.pawn1loc) {
+                        if (player.pawn1loc == "start") {
                             return {x:383,y:442};
                         }
                     }
@@ -111,7 +111,7 @@ class Game {
             case "rpawn2":
                 for (var player of this.players){
                     if (player.color == "red"){
-                        if (!player.pawn2loc) {
+                        if (player.pawn2loc == "start") {
                             return {x:410,y:442};
                         }
                     }
@@ -120,7 +120,7 @@ class Game {
             case "rpawn3":
                 for (var player of this.players){
                     if (player.color == "red"){
-                        if (!player.pawn3loc) {
+                        if (player.pawn3loc == "start") {
                             return {x:383,y:472};
                         }
                     }
@@ -129,7 +129,7 @@ class Game {
             case "rpawn4":
                 for (var player of this.players){
                     if (player.color == "red"){
-                        if (!player.pawn4loc) {
+                        if (player.pawn4loc == "start") {
                             return {x:410,y:472};
                         }
                     }
@@ -138,7 +138,7 @@ class Game {
             case "bpawn1":
                 for (var player of this.players){
                     if (player.color == "blue"){
-                        if (!player.pawn1loc) {
+                        if (player.pawn1loc == "start") {
                             return {x:113,y:379};
                         }
                     }
@@ -147,7 +147,7 @@ class Game {
             case "bpawn2":
                 for (var player of this.players){
                     if (player.color == "blue"){
-                        if (!player.pawn2loc) {
+                        if (player.pawn2loc == "start") {
                             return {x:142,y:379};
                         }
                     }
@@ -156,7 +156,7 @@ class Game {
             case "bpawn3":
                 for (var player of this.players){
                     if (player.color == "blue"){
-                        if (!player.pawn3loc) {
+                        if (player.pawn3loc == "start") {
                             return {x:113,y:410};
                         }
                     }
@@ -165,7 +165,7 @@ class Game {
             case "bpawn4":
                 for (var player of this.players){
                     if (player.color == "blue"){
-                        if (!player.pawn4loc) {
+                        if (player.pawn4loc == "start") {
                             return {x:142,y:410};
                         }
                     }
@@ -174,7 +174,7 @@ class Game {
             case "gpawn1":
                 for (var player of this.players){
                     if (player.color == "green"){
-                        if (!player.pawn1loc) {
+                        if (player.pawn1loc == "start") {
                             return {x:173,y:114};
                         }
                     }
@@ -183,7 +183,7 @@ class Game {
             case "gpawn2":
                 for (var player of this.players){
                     if (player.color == "green"){
-                        if (!player.pawn2loc) {
+                        if (player.pawn2loc == "start") {
                             return {x:204,y:114};
                         }
                     }
@@ -192,7 +192,7 @@ class Game {
             case "gpawn3":
                 for (var player of this.players){
                     if (player.color == "green"){
-                        if (!player.pawn3loc) {
+                        if (player.pawn3loc == "start") {
                             return {x:173,y:140};
                         }
                     }
@@ -201,7 +201,7 @@ class Game {
             case "gpawn4":
                 for (var player of this.players){
                     if (player.color == "green"){
-                        if (!player.pawn4loc) {
+                        if (player.pawn4loc == "start") {
                             return {x:204,y:140};
                         }
                     }
@@ -210,7 +210,7 @@ class Game {
             case "ypawn1":
                 for (var player of this.players){
                     if (player.color == "yellow"){
-                        if (!player.pawn1loc) {
+                        if (player.pawn1loc == "start") {
                             return {x:451,y:172};
                         }
                     }
@@ -219,16 +219,16 @@ class Game {
             case "ypawn2":
                 for (var player of this.players){
                     if (player.color == "yellow"){
-                        if (!player.pawn2loc) {
+                        if (player.pawn2loc == "start") {
                             return {x:479,y:172};
                         }
                     }
                 }
-                return {x:479,y:114};
+                return {x:479,y:172};
             case "ypawn3":
                 for (var player of this.players){
                     if (player.color == "yellow"){
-                        if (!player.pawn3loc) {
+                        if (player.pawn3loc == "start") {
                             return {x:451,y:203};
                         }
                     }
@@ -237,7 +237,7 @@ class Game {
             case "ypawn4":
                 for (var player of this.players){
                     if (player.color == "yellow"){
-                        if (!player.pawn4loc) {
+                        if (player.pawn4loc == "start") {
                             return {x:479,y:203};
                         }
                     }

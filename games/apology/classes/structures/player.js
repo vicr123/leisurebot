@@ -5,10 +5,10 @@ class Player {
         this.username = user.username;
         this.Game = game;
         this.color = "";
-        this.pawn1loc;
-        this.pawn2loc;
-        this.pawn3loc;
-        this.pawn4loc;
+        this.pawn1loc = "start";
+        this.pawn2loc = "start";
+        this.pawn3loc = "start";
+        this.pawn4loc = "start";
     }
 }
 exports.Player = Player;
