@@ -98,15 +98,19 @@ class Game {
         switch (space){
             case "YSTART": return {x:562,y:172};
             case "AY3": return {x:562,y:274};
+            case "YSL21": return {x:562,y:344};
             case "AY6": return {x:562,y:562};
             case "RSTART": return {x:413,y:562};
             case "AR3": return {x:310,y:562};
+            case "RSL21": return {x:242,y:562};
             case "AR6": return {x:22,y:562};
             case "BSTART": return {x:22,y:412};
             case "AB3": return {x:22,y:309};
+            case "BSL21": return {x:22,y:242};
             case "AB6": return {x:22,y:22};
             case "GSTART": return {x:173,y:22};
             case "AG3": return {x:276,y:22};
+            case "GSL21": return {x:344,y:22};
             case "AG6": return {x:562,y:22};
         }
     }
@@ -326,24 +330,28 @@ class Game {
                 switch (howFar) {
                     case -4: return "AY6";
                     case 3: return "AR3";
+                    case 5: return "RSL21";
                 }
                 return "nope";
             case "BSTART":
                 switch (howFar) {
                     case -4: return "AR6";
                     case 3: return "AB3";
+                    case 5: return "BSL21";
                 }
                 return "nope";
             case "GSTART":
                 switch (howFar) {
                     case -4: return "AB6";
                     case 3: return "AG3";
+                    case 5: return "GSL21"
                 }
                 return "nope";
             case "YSTART":
                 switch (howFar) {
                     case -4: return "AG6";
                     case 3: return "AY3";
+                    case 5: return "YSL21";
                 }
                 return "nope";
         }
@@ -368,6 +376,24 @@ class Game {
                     curPlayer.pawnsOut++;
                     setTimeout(this.advanceTurn.bind(this), 4500);
                     return;
+                }
+                switch (curPlayer.color){
+                    case "red":
+                        if (curPlayer.pawn1loc != "RSTART" && curPlayer.pawn2loc != "RSTART" && curPlayer.pawn3loc != "RSTART" && curPlayer.pawn4loc != "RSTART"){
+
+                        }
+                    case "blue":
+                        if (curPlayer.pawn1loc != "BSTART" && curPlayer.pawn2loc != "BSTART" && curPlayer.pawn3loc != "BSTART" && curPlayer.pawn4loc != "BSTART"){
+                            
+                        }
+                    case "green":
+                        if (curPlayer.pawn1loc != "GSTART" && curPlayer.pawn2loc != "GSTART" && curPlayer.pawn3loc != "GSTART" && curPlayer.pawn4loc != "GSTART"){
+                            
+                        }
+                    case "yellow":
+                        if (curPlayer.pawn1loc != "YSTART" && curPlayer.pawn2loc != "YSTART" && curPlayer.pawn3loc != "YSTART" && curPlayer.pawn4loc != "YSTART"){
+                            
+                        }
                 }
                 return;
             case "2":
