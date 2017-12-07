@@ -57,6 +57,10 @@ module.exports = class {
             if (message.author.id == "111793783057723392") {
                 Apology.Games[this.id].rigDeck(messageParts);
             }
+        } else if (message.content == "A" | message.content == "B") {
+            if (Apology.Games[this.id].moveStage == "letter") {
+                Apology.Games[this.id].cardChoice(command);
+            }
         } else {
             Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
             message.react("✅");

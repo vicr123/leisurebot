@@ -127,9 +127,8 @@ class Game {
             case "rpawn2":
                 for (var player of this.players){
                     if (player.color == "red"){
-                        if (player.pawn2loc == "start") {
-                            return {x:410,y:442};
-                        }
+                        if (player.pawn2loc == "start") return {x:410,y:442};
+                        else return this.getPointFromSpace(player.pawn2loc);
                     }
                 }
                 return {x:410,y:442};
@@ -723,8 +722,8 @@ class Game {
     cardChoice(choice) {
         var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
         switch (this.moveInProgress) {
-            case 1:
-                if (choice == "A"){
+            case "1":
+                if (choice == "a"){
                     if (curPlayer.pawn1loc == "start") {
                         switch (curPlayer.color) {
                             case "red": this.movePawn(curPlayer, "rpawn1", "RSTART"); break;
