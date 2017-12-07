@@ -268,7 +268,7 @@ class Game {
         this.turnNum = Math.floor(Math.random() * this.players.length);
     }
     startTurn(){
-        if (this.cardDeck == []) this.newDeck();
+        if (this.cardDeck.length == 0) this.newDeck();
         var player = this.getPlayerFromColor(this.turnList[this.turnNum]);
         player.player.send("It is your turn, <@"+player.id+">. Type `draw` to draw a card from the deck.");
         this.announce("It is "+player.username+" ("+player.color+")'s turn.", player);
@@ -380,19 +380,31 @@ class Game {
                 switch (curPlayer.color){
                     case "red":
                         if (curPlayer.pawn1loc != "RSTART" && curPlayer.pawn2loc != "RSTART" && curPlayer.pawn3loc != "RSTART" && curPlayer.pawn4loc != "RSTART"){
-
+                            curPlayer.player.send("What would you like to do? Answer `A` or `B`.");
+                            this.moveInProgress = "1";
+                            this.moveStage = "letter";
+                            return;
                         }
                     case "blue":
                         if (curPlayer.pawn1loc != "BSTART" && curPlayer.pawn2loc != "BSTART" && curPlayer.pawn3loc != "BSTART" && curPlayer.pawn4loc != "BSTART"){
-                            
+                            curPlayer.player.send("What would you like to do? Answer `A` or `B`.");
+                            this.moveInProgress = "1";
+                            this.moveStage = "letter";
+                            return;
                         }
                     case "green":
                         if (curPlayer.pawn1loc != "GSTART" && curPlayer.pawn2loc != "GSTART" && curPlayer.pawn3loc != "GSTART" && curPlayer.pawn4loc != "GSTART"){
-                            
+                            curPlayer.player.send("What would you like to do? Answer `A` or `B`.");
+                            this.moveInProgress = "1";
+                            this.moveStage = "letter";
+                            return;
                         }
                     case "yellow":
                         if (curPlayer.pawn1loc != "YSTART" && curPlayer.pawn2loc != "YSTART" && curPlayer.pawn3loc != "YSTART" && curPlayer.pawn4loc != "YSTART"){
-                            
+                            curPlayer.player.send("What would you like to do? Answer `A` or `B`.");
+                            this.moveInProgress = "1";
+                            this.moveStage = "letter";
+                            return;
                         }
                 }
                 return;
@@ -707,6 +719,69 @@ class Game {
                 throw new Error("Someone snuck a Joker or something into the deck!");
         }
         //this.drawEnabled = false;
+    }
+    cardChoice(choice) {
+        var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
+        switch (this.moveInProgress) {
+            case 1:
+                if (choice == "A"){
+                    if (curPlayer.pawn1loc == "start") {
+                        switch (curPlayer.color) {
+                            case "red": this.movePawn(curPlayer, "rpawn1", "RSTART"); break;
+                            case "blue": this.movePawn(curPlayer, "bpawn1", "BSTART"); break;
+                            case "green": this.movePawn(curPlayer, "gpawn1", "GSTART"); break;
+                            case "yellow": this.movePawn(curPlayer, "ypawn1", "YSTART"); break;
+                        }
+                        this.showBoard();
+                        curPlayer.player.send("Your first pawn is out of start.");
+                        this.announce(curPlayer.username+"'s first pawn is out of start.", curPlayer);
+                        curPlayer.pawnsOut++;
+                        setTimeout(this.startTurn.bind(this), 4500);
+                        return;
+                    } else if (curPlayer.pawn2loc == "start") {
+                        switch (curPlayer.color) {
+                            case "red": this.movePawn(curPlayer, "rpawn2", "RSTART"); break;
+                            case "blue": this.movePawn(curPlayer, "bpawn2", "BSTART"); break;
+                            case "green": this.movePawn(curPlayer, "gpawn2", "GSTART"); break;
+                            case "yellow": this.movePawn(curPlayer, "ypawn2", "YSTART"); break;
+                        }
+                        this.showBoard();
+                        curPlayer.player.send("Your second pawn is out of start.");
+                        this.announce(curPlayer.username+"'s second pawn is out of start.", curPlayer);
+                        curPlayer.pawnsOut++;
+                        setTimeout(this.startTurn.bind(this), 4500);
+                        return;
+                    } else if (curPlayer.pawn3loc == "start") {
+                        switch (curPlayer.color) {
+                            case "red": this.movePawn(curPlayer, "rpawn3", "RSTART"); break;
+                            case "blue": this.movePawn(curPlayer, "bpawn3", "BSTART"); break;
+                            case "green": this.movePawn(curPlayer, "gpawn3", "GSTART"); break;
+                            case "yellow": this.movePawn(curPlayer, "ypawn3", "YSTART"); break;
+                        }
+                        this.showBoard();
+                        curPlayer.player.send("Your third pawn is out of start.");
+                        this.announce(curPlayer.username+"'s third pawn is out of start.", curPlayer);
+                        curPlayer.pawnsOut++;
+                        setTimeout(this.startTurn.bind(this), 4500);
+                        return;
+                    } else if (curPlayer.pawn4loc == "start") {
+                        switch (curPlayer.color) {
+                            case "red": this.movePawn(curPlayer, "rpawn4", "RSTART"); break;
+                            case "blue": this.movePawn(curPlayer, "bpawn4", "BSTART"); break;
+                            case "green": this.movePawn(curPlayer, "gpawn4", "GSTART"); break;
+                            case "yellow": this.movePawn(curPlayer, "ypawn4", "YSTART"); break;
+                        }
+                        this.showBoard();
+                        curPlayer.player.send("Your fourth pawn is out of start.");
+                        this.announce(curPlayer.username+"'s fourth pawn is out of start.", curPlayer);
+                        curPlayer.pawnsOut++;
+                        setTimeout(this.startTurn.bind(this), 4500);
+                        return;
+                    } 
+                } else if (choice == "B") {
+
+                }
+        }
     }
 }
 
