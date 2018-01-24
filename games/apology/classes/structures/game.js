@@ -1,6 +1,18 @@
 const Discord = require("discord.js");
 
+/**
+ * A game object for Apology.
+ * @typedef {Object} Game
+ * @property {number} id - The ID of the game.
+ * @property {boolean} started - Whether or not the game has started.
+ */
 class Game {
+
+    /**
+     * Makes a new Apology Game.
+     * @param {number} id - The ID of the game.
+     * @class
+     */
     constructor(id) {
         this.id = id;
         this.started = false;
@@ -36,6 +48,12 @@ class Game {
             }
         }
     }
+
+    /**
+     * Sends a message to all players, except for ignorePlayer.
+     * @param {string} message - The message to send
+     * @param {Player} ignorePlayer - The player to not send the message to.
+     */
     announce(message, ignorePlayer) {
         this.players.forEach(function(elem) {
             if (ignorePlayer) {
@@ -96,6 +114,11 @@ class Game {
 
         return tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
     }
+
+    /**
+     * Returns co-ordinates for a space on the board.
+     * @param {string} space - A space on the game board.
+     */
     getPointFromSpace(space){
         switch (space){
             case "YSTART": return {x:562,y:172};
@@ -281,6 +304,13 @@ class Game {
         else this.turnNum++;
         this.startTurn();
     }
+
+    /**
+     * Moves a pawn to a specified destination.
+     * @param {Player} curPlayer - The current player.
+     * @param {string} pawn - The pawn that needs to be moved.
+     * @param {string} destination - Where the pawn needs to go.
+     */
     movePawn(curPlayer, pawn, destination){
         for (var player of this.players) {
             if (player.pawn1loc == destination) {
@@ -326,6 +356,13 @@ class Game {
             case "ypawn4": if (yP) yP.pawn4loc = destination; return;
         }
     }
+
+    /**
+     * Returns a destination square for a pawn to move to based on the parameters given.
+     * @param {string} startSpace - Where the pawn is currently.
+     * @param {number} howFar - How many spaces the pawn travels (negative for going backwards).
+     * @param {string} color - The color of the pawn.
+     */
     getDestination(startSpace, howFar, color){
         switch (startSpace){
             case "RSTART":
@@ -358,10 +395,14 @@ class Game {
                 return "nope";
         }
     }
+
+    /**
+     * Draws a card for the current player.
+     */
     drawCard(){
         var card = this.cardDeck.shift();
         var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
-        console.log("Apology | #"+this.id+" "+curPlayer.username+" ("+curPlayer.color+") is drawing a card.");
+        log(player.username+" ("+player.color+") has drawn a "+card+".", "info", "[APLGY#"+this.id+"]");
         switch (card) {
             case "1":
                 this.announce(new Discord.Attachment("games/apology/images/card01.png"));
@@ -722,6 +763,11 @@ class Game {
         }
         //this.drawEnabled = false;
     }
+
+    /**
+     * Decides on what to do for a multiple-choice card.
+     * @param {string} choice 
+     */
     cardChoice(choice) {
         var curPlayer = this.getPlayerFromColor(this.turnList[this.turnNum]);
         switch (this.moveInProgress) {

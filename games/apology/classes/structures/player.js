@@ -1,4 +1,10 @@
 class Player {
+    /**
+     * Creates a new game player object.
+     * @param {any} user 
+     * @param {Game} game 
+     * @class
+     */
     constructor (user, game) {
         this.player = user;
         this.id = user.id;
