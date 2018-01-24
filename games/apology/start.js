@@ -17,35 +17,31 @@ module.exports = class {
         this.client = client;
         this.firstPlayer = firstPlayer;
         this.isOpen = true;
-        var Game = new Apology.Game(id);
-        Apology.Games[id] = Game;
-        var Player = new Apology.Player(firstPlayer, Apology.Games[id]);
+        this.game = new Apology.Game(id);
+        Apology.Games[id] = this.game;
+        var Player = new Apology.Player(firstPlayer, this.game);
         Apology.Players[Player.id] = Player;
-        Apology.Games[id].players[Apology.Games[id].players.length] = Player;
+        this.game.players[this.game.players.length] = Player;
+        log("Created new game of Apology with ID #"+id+".", "info", "[APLGY#"+id+"]");
     }
     addMember(member) {
         if (member == null) return;
-        if (!this.isOpen) {
-            throw new UserInputError("This game isn't available.");
-        }
+        if (!this.isOpen) throw new UserInputError("This game isn't available.");
         console.log(member.id);
-        if (Apology.Players[member.id]) {
-            throw new Error("You're already in this game.");
-        }
-        if (Apology.Games[this.id].players.length == 4) {
-            throw new Error("This game is full!");
-        }
-        var Player = new Apology.Player(member, Apology.Games[this.id]);
+        if (Apology.Players[member.id]) throw new CommandError("You're already in this game.");
+        if (this.game.players.length == 4) throw new CommandError("This game is full!");
+        var Player = new Apology.Player(member, this.game);
         Apology.Players[Player.id] = Player;
-        Apology.Games[this.id].players[Apology.Games[this.id].players.length] = Player;
+        this.game.players[this.game.players.length] = Player;
         Player.Game.announce("**" + member.username + "** has joined the game!");
+        log("Added "+member.username+" to the game. Player count: "+this.game.players.length+".", "info", "[APLGY#"+this.id+"]");
     }
     processCommand(command, messageParts, message) {
         if (command == "draw") {
             if (messageParts.length < 1) {
-                for (var player of Apology.Games[this.id].players) {
-                    if (player.color == Apology.Games[this.id].turnList[Apology.Games[this.id].turnNum] && Apology.Games[this.id].drawEnabled) {
-                        Apology.Games[this.id].drawCard();
+                for (var player of this.game.players) {
+                    if (player.color == this.game.turnList[this.game.turnNum] && this.game.drawEnabled) {
+                        this.game.drawCard();
                         return;
                     }
                 }
@@ -55,11 +51,11 @@ module.exports = class {
             }
         } else if (command == "rig") {
             if (message.author.id == "111793783057723392") {
-                Apology.Games[this.id].rigDeck(messageParts);
+                this.game.rigDeck(messageParts);
             }
         } else if (message.content == "A" | message.content == "B") {
-            if (Apology.Games[this.id].moveStage == "letter") {
-                Apology.Games[this.id].cardChoice(command);
+            if (this.game.moveStage == "letter") {
+                this.game.cardChoice(command);
             }
         } else {
             Apology.Players[message.author.id].Game.announce("["+Apology.Players[message.author.id].Game.id+"] **" + message.author.username + "**: " + message.content, Apology.Players[message.author.id]);
@@ -70,18 +66,19 @@ module.exports = class {
         return "Everyone's ready, so let's get this game started!";
     }
     close() {
-        Apology.Games[this.id].started=true;
+        this.game.started=true;
         this.isOpen=false;
-        Apology.Games[this.id].announce("The game has been closed, let's go!");
-        Apology.Games[this.id].newDeck();
-        console.log("Apology | Game " + this.id + " started!");
+        this.game.announce("The game has been closed, let's go!");
+        log("Game closed to new players.", "info", "[APLGY#"+this.id+"]");
+        this.game.newDeck();
         var colors = ["red", "blue", "green", "yellow"];
-        for (var i = 0; i < Apology.Games[this.id].players.length; i++) {
-            Apology.Games[this.id].players[i].color = colors[i];
-            Apology.Games[this.id].players[i].player.send("Your color is "+colors[i]+".");
+        log("Assigning colors...", "info", "[APLGY#"+this.id+"]");
+        for (var i = 0; i < this.game.players.length; i++) {
+            this.game.players[i].color = colors[i];
+            this.game.players[i].player.send("Your color is "+colors[i]+".");
         }
-        Apology.Games[this.id].showBoard();
-        Apology.Games[this.id].prepareTurns();
-        Apology.Games[this.id].startTurn();
+        this.game.showBoard();
+        this.game.prepareTurns();
+        this.game.startTurn();
     }
 }

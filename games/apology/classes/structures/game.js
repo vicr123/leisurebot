@@ -49,6 +49,7 @@ class Game {
         return true;
     }
     newDeck() {
+        log("Shuffling the deck...", "info", "[APLGY#"+this.id+"]");
         var baseDeck = ["1", "1", "1", "1", "1",
                         "2", "2", "2", "2",
                         "3", "3", "3", "3",
@@ -63,6 +64,7 @@ class Game {
         this.cardDeck = shuffleArray(baseDeck);
     }
     showBoard() {
+        log("Drawing the board...", "info", "[APLGY#"+this.id+"]");
         const { createCanvas, loadImage, Image } = require('canvas');
         const canvas = createCanvas(600, 600);
         const ctx = canvas.getContext('2d');
@@ -272,6 +274,7 @@ class Game {
         player.player.send("It is your turn, <@"+player.id+">. Type `draw` to draw a card from the deck.");
         this.announce("It is "+player.username+" ("+player.color+")'s turn.", player);
         this.drawEnabled = true;
+        log(player.username+" ("+player.color+")'s turn has started.", "info", "[APLGY#"+this.id+"]");
     }
     advanceTurn(){
         if (this.turnNum + 1 == this.turnList.length) this.turnNum = 0;
@@ -343,7 +346,7 @@ class Game {
                 switch (howFar) {
                     case -4: return "AB6";
                     case 3: return "AG3";
-                    case 5: return "GSL21"
+                    case 5: return "GSL21";
                 }
                 return "nope";
             case "YSTART":

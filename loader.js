@@ -6,25 +6,27 @@ let games = [];
 let joiningGames = {};
 let userGames = {};
 
-global.log = function(logMessage, type) {
+global.log = function(logMessage, type, extra) {
   let logString = logMessage;
   let logFormatting = "";
+  let logPrefix = "";
+  if (extra != null) logPrefix = extra + " ";
   switch (type) {
     case "info":
       logString = "[37m" + logMessage + "[39m[0m";
-      logFormatting = "[37m[-][39m";
+      logFormatting = "[37m"+logPrefix+"[-][39m";
       break;
     case "warning":
       logString = "[0m[33m" + logMessage + "[39m[0m";
-      logFormatting = "[33m[!][39m";
+      logFormatting = "[33m"+logPrefix+"[!][39m";
       break;
     case "critical":
       logString = "[0m[31m" + logMessage + "[39m[0m";
-      logFormatting = "[31m[x][39m";
+      logFormatting = "[31m"+logPrefix+"[x][39m";
       break;
     case "success":
       logString = "[32m" + logMessage + "[39m";
-      logFormatting = "[32m[S][39m";
+      logFormatting = "[32m"+logPrefix+"[S][39m";
       break;
   }
   console.log(logFormatting + " " + logString)
@@ -274,5 +276,5 @@ client.on("message", function(message) {
 });
 
 client.login(require("./keys.js").loginToken).then(function() {
-    log("We're ready to relax.");
+    log("We're ready to relax.", "info");
 });
