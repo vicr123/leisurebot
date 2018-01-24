@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 let loaderVersion = "0.1";
-global.prefix = "play:"
+global.prefix = "play:";
 let games = [];
 let joiningGames = {};
 let userGames = {};
@@ -29,8 +29,8 @@ global.log = function(logMessage, type, extra) {
       logFormatting = "[32m"+logPrefix+"[S][39m";
       break;
   }
-  console.log(logFormatting + " " + logString)
-}
+  console.log(logFormatting + " " + logString);
+};
 
 global.getRandom = function() {
     if (arguments.length == 1) {
@@ -42,7 +42,7 @@ global.getRandom = function() {
         var random = Math.floor(Math.random() * 1000) % arguments.length;
         return arguments[random];
     }
-}
+};
 
 global.shuffleArray = function(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -61,7 +61,7 @@ global.shuffleArray = function(array) {
     }
   
     return array;
-}
+};
 
 let client = new Discord.Client({
     restTimeOffset: 50
@@ -72,7 +72,7 @@ global.UserInputError = function() {
     temp.name = "UserInputError";
     this.name = "UserInputError";
     this.message = temp.message;
-}
+};
 
 UserInputError.prototype = Object.create(Error.prototype, {
     constructor: {
@@ -87,7 +87,7 @@ global.CommandError = function() {
     temp.name = "CommandError";
     this.name = "CommandError";
     this.message = temp.message;
-}
+};
 
 CommandError.prototype = Object.create(Error.prototype, {
     constructor: {
@@ -110,17 +110,15 @@ client.on("message", function(message) {
             }
             let internalGameId = userGames[message.author.id];
             if (internalGameId == null) {
-                throw new UserInputError("Invalid Game ID. Please prefix your command with a game ID.")
+                throw new UserInputError("Invalid Game ID. Please prefix your command with a game ID.");
             }
 
             if (internalGameId >= games.length) {
-                throw new UserInputError("Invalid Game ID. Please prefix your command with a game ID.")
+                throw new UserInputError("Invalid Game ID. Please prefix your command with a game ID.");
             }
             
-            let command = messageParts.shift()
-            if (command == undefined || command == "") {
-             return; //this message has no content because it's an image, which can break things 
-            }
+            let command = messageParts.shift();
+            if (command == undefined || command == "") return; //this message has no content because it's an image, which can break things
             command = command.toLowerCase();
             games[internalGameId].processCommand(command, messageParts, message); //Pass control to the game module
         } else {
@@ -141,7 +139,7 @@ client.on("message", function(message) {
                     let embed = new Discord.RichEmbed();
                     embed.setAuthor("Leisure Help");
                     embed.setColor("#fbc02d");
-                    embed.setDescription("Leisure Commands")
+                    embed.setDescription("Leisure Commands");
                     embed.addField("General", "ping\nhelp", true);
                     embed.addField("Games", "`join`\n`close`", true);
                     embed.setFooter("Leisure Help ─ Commands in codeblocks are only available for multiplayer games");
@@ -149,9 +147,7 @@ client.on("message", function(message) {
                     return;
                 }
                 case "eval": {
-                  if (message.author.id !== "246574843460321291" && message.author.id !== "278805875978928128") {
-                    return message.reply("You don't have access to this command.")
-                  };
+                    if (message.author.id !== "246574843460321291" && message.author.id !== "278805875978928128") return message.reply("You don't have access to this command.");
                     let evaledResult = eval(args.join(" "));
                     let embed = new Discord.RichEmbed();
                     embed.setAuthor("Leisure Eval");
@@ -189,7 +185,7 @@ client.on("message", function(message) {
                         let embed = new Discord.RichEmbed();
                         embed.setAuthor("Leisure ─ Games List");
                         embed.setColor("#8bc34a");
-                        embed.setDescription("Here's a list of some games you can try;")
+                        embed.setDescription("Here's a list of some games you can try;");
                         embed.addField("Games", m, true);
 
                         message.channel.send(embed);
@@ -254,7 +250,7 @@ client.on("message", function(message) {
             }
         }
     } catch (err) {
-        var embed = new Discord.RichEmbed;
+        var embed = new Discord.RichEmbed();
         embed.setColor("#FF0000");
         embed.addField("Details", err.message);
 

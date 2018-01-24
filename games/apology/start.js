@@ -81,4 +81,4 @@ module.exports = class {
         this.game.prepareTurns();
         this.game.startTurn();
     }
-}
+};

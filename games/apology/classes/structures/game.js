@@ -37,7 +37,7 @@ class Game {
                 if (elem == userResolve) {
                     returnValue = this.players[index];
                 }
-            })
+            });
         }
         return returnValue;
     }
@@ -97,7 +97,7 @@ class Game {
         };
         image.src = "games/apology/images/board.png";
 
-        while (drawing){};
+        while (drawing){}
         var pawns = ["rpawn1", "rpawn2", "rpawn3", "rpawn4", "bpawn1", "bpawn2", "bpawn3", "bpawn4", "gpawn1", "gpawn2", "gpawn3", "gpawn4", "ypawn1", "ypawn2", "ypawn3", "ypawn4"];
         for (var pawn of pawns){
             drawing = true;
@@ -109,7 +109,7 @@ class Game {
                 drawing = false;
             };
             image.src = "games/apology/images/"+pawn+".png";
-            while (drawing){};
+            while (drawing){}
         }
 
         return tempApology.Games[tempID].announce(new Discord.Attachment(canvas.toBuffer()));
